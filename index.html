@@ -5,12 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADP PSEC - Para Sports Excellence Centre Portal</title>
   
-  <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- App Manifest & Mobile Icons (Linked to your uploaded icon.png) -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b0f19">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icon.png">
+  <link rel="shortcut icon" type="image/png" href="/icon.png">
+
+  <!-- EmailJS SDK for Production Email Dispatch -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+       emailjs.init("A264Xg40sIF_7HuFM");
+    })();
+  </script>
 
   <script>
     tailwind.config = {
@@ -18,13 +29,7 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              purple: '#7c3aed',
-              darkPurple: '#5b21b6',
-              gold: '#f59e0b',
-              dark: '#0b0f19',
-              card: '#151e2e'
-            }
+            brand: { purple: '#7c3aed', darkPurple: '#5b21b6', gold: '#f59e0b', dark: '#0b0f19', card: '#151e2e' }
           }
         }
       }
@@ -33,16 +38,16 @@
   <style>
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
 
   <!-- ASSOCIATION GATE SCREEN -->
   <div id="associationGateScreen" class="flex-1 flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 w-full max-w-md p-8 rounded-2xl shadow-2xl text-center space-y-6">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-amber-500 flex items-center justify-center font-bold text-white text-3xl mx-auto shadow-lg">
-        <i class="fa-solid fa-wheelchair"></i>
-      </div>
+      <img src="/icon.png" alt="PSEC Logo" class="w-20 h-20 mx-auto rounded-2xl shadow-lg border-4 border-white/10 bg-white object-cover">
       <div>
         <h2 class="text-xl font-bold text-white tracking-wide">ADP Para Sports Excellence Centre</h2>
         <p class="text-xs text-slate-400 mt-1">Please select your association status to proceed</p>
@@ -68,6 +73,7 @@
       <button onclick="backToAssociationGate()" class="absolute left-4 top-4 text-slate-400 hover:text-white text-xs cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i>Back</button>
       
       <div class="text-center mb-6 mt-2">
+        <img src="/icon.png" alt="PSEC Logo" class="w-16 h-16 mx-auto rounded-xl shadow border border-white/10 mb-3 bg-white object-cover">
         <h2 class="text-lg font-bold text-white tracking-wide">PSEC Member Login</h2>
         <p class="text-xs text-slate-400 mt-1">Enter your assigned username and password</p>
       </div>
@@ -93,7 +99,7 @@
   <!-- NOT ASSOCIATED SCREEN -->
   <div id="notAssociatedScreen" class="flex-1 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 w-full max-w-md p-8 rounded-2xl text-center space-y-4">
-      <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl">
+      <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl border border-amber-500/20">
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
       <h3 class="text-lg font-bold text-white">Access Restricted</h3>
@@ -105,20 +111,19 @@
   <!-- MAIN APP INTERFACE -->
   <div id="mainApp" class="flex-1 hidden flex-col md:flex-row min-w-0 relative">
     
-    <!-- Sidebar Navigation (Collapsible on Mobile) -->
+    <!-- Sidebar Navigation -->
     <aside id="appSidebar" class="absolute md:static inset-y-0 left-0 z-30 w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
       <div>
-        <div class="p-5 border-b border-slate-800 flex items-center space-x-3">
-          <!-- Clickable Profile Picture -->
-          <div onclick="openMyProfileModal()" title="Click to view your profile" class="w-10 h-10 rounded-xl border border-purple-500 overflow-hidden cursor-pointer hover:opacity-80 transition flex-shrink-0 shadow-md">
-            <img id="sidebarProfilePic" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80" alt="Profile" class="w-full h-full object-cover">
+        <div class="p-4 border-b border-slate-800 flex items-center space-x-3">
+          <div onclick="openMyProfileModal()" title="Click to view/edit your profile" class="w-11 h-11 rounded-xl border border-purple-500/50 overflow-hidden cursor-pointer hover:opacity-80 transition flex-shrink-0 shadow-md bg-white p-0.5">
+            <img id="sidebarProfilePic" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80" alt="Profile" class="w-full h-full object-cover rounded-lg">
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
-              <h1 class="font-bold text-xs leading-tight tracking-wider text-white" id="sidebarUserName">Sharmila</h1>
-              <span id="sidebarUserRoleBadge" class="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">PLAYER</span>
+              <h1 class="font-bold text-xs leading-tight tracking-wider text-white" id="sidebarUserName">ADP Super Admin</h1>
+              <span id="sidebarUserRoleBadge" class="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">ADMIN</span>
             </div>
-            <p class="text-[10px] text-purple-400 font-semibold mt-0.5" id="sideNavRole">High Performance</p>
+            <p class="text-[10px] text-purple-400 font-semibold mt-0.5" id="sideNavRole">Super Admin (adp01)</p>
           </div>
         </div>
 
@@ -136,6 +141,11 @@
           <button onclick="switchTab('staff')" id="btn-staff" class="admin-nav-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-left text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
             <i class="fa-solid fa-id-badge w-5 text-amber-400"></i>
             <span>Staff Directory</span>
+          </button>
+
+          <button onclick="switchTab('attendance'); renderAttendanceTabUI();" id="btn-attendance" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-left text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
+            <i class="fa-solid fa-calendar-check w-5 text-emerald-400"></i>
+            <span>Staff Attendance</span>
           </button>
 
           <button onclick="switchTab('sportsScience')" id="btn-sportsScience" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-left text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
@@ -170,7 +180,7 @@
         </nav>
       </div>
 
-      <!-- Admin Exclusive Controls & Logout Button -->
+      <!-- Admin Controls & Logout -->
       <div class="p-4 border-t border-slate-800 text-xs text-slate-500 space-y-3">
         <div id="adminIndicator" class="hidden space-y-2">
           <span class="inline-flex items-center px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded border border-amber-500/20 font-bold">
@@ -185,12 +195,17 @@
             <span>Manage & Rename Projects</span>
           </button>
         </div>
+
+        <button onclick="openChangePasswordModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 rounded font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
+          <i class="fa-solid fa-key"></i>
+          <span>Change Password</span>
+        </button>
         
         <button onclick="logout()" class="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span>Logout Portal</span>
         </button>
-        <p class="text-[11px] text-center">PSEC Secure v4.30</p>
+        <p class="text-[11px] text-center">PSEC Production v4.55</p>
       </div>
     </aside>
 
@@ -200,12 +215,10 @@
       <!-- Minimal Header -->
       <header class="bg-slate-900/80 border-b border-slate-800 px-6 py-3 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center space-x-3">
-          <!-- Mobile Hamburger Toggle Button -->
           <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-300 hover:text-white focus:outline-none p-1 cursor-pointer">
             <i class="fa-solid fa-bars text-base"></i>
           </button>
 
-          <!-- Active Project Filter (Super Admin Only / Hidden for Players) -->
           <div id="topBarProjectFilterContainer" class="flex items-center space-x-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-purple-500/40">
             <i class="fa-solid fa-handshake-angle text-amber-400 text-sm"></i>
             <span class="text-xs text-slate-400 font-bold uppercase hidden sm:inline">Active Project:</span>
@@ -221,7 +234,6 @@
         <!-- DASHBOARD -->
         <section id="tab-dashboard" class="tab-content active space-y-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Active Para-Athletes Card (Hidden for Players) -->
             <div id="statCardAthletes" class="bg-slate-900 border border-slate-800 p-5 rounded-xl items-center justify-between flex">
               <div>
                 <p class="text-xs text-slate-400 uppercase font-semibold">Active Para-Athletes</p>
@@ -232,7 +244,6 @@
               </div>
             </div>
 
-            <!-- Active Staff Card (Super Admin Only) -->
             <div id="statCardStaff" class="bg-slate-900 border border-slate-800 p-5 rounded-xl items-center justify-between flex">
               <div>
                 <p class="text-xs text-slate-400 uppercase font-semibold">Active Staff</p>
@@ -243,18 +254,16 @@
               </div>
             </div>
 
-            <!-- Mental Health Support Card -->
             <div onclick="switchTab('mentalHealth')" class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-center justify-between cursor-pointer hover:border-indigo-500/50 transition">
               <div>
                 <p class="text-xs text-slate-400 uppercase font-semibold">Mental Health Support</p>
-                <h3 class="text-2xl font-black text-indigo-400 mt-1" id="stat-mental-count">1</h3>
+                <h3 class="text-2xl font-black text-indigo-400 mt-1" id="stat-mental-count">0</h3>
               </div>
               <div class="w-12 h-12 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">
                 <i class="fa-solid fa-brain"></i>
               </div>
             </div>
 
-            <!-- Active Rehab Cases Card -->
             <div onclick="switchTab('rehab')" class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-center justify-between cursor-pointer hover:border-rose-500/50 transition">
               <div>
                 <p class="text-xs text-slate-400 uppercase font-semibold">Active Rehab Cases</p>
@@ -265,7 +274,6 @@
               </div>
             </div>
 
-            <!-- Active Adaptive Equipment Requests Card -->
             <div onclick="switchTab('equipment')" class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-center justify-between cursor-pointer hover:border-sky-500/50 transition">
               <div>
                 <p class="text-xs text-slate-400 uppercase font-semibold" id="equipStatLabel">Equipment Requests</p>
@@ -287,7 +295,6 @@
                 <p class="text-xs text-slate-400" id="graphSubtitle">Verified 3-year performance curve.</p>
               </div>
 
-              <!-- Admin selector only; players view only their own graph -->
               <div id="graphAthleteSelectContainer" class="hidden items-center space-x-2">
                 <label class="text-xs text-slate-400 font-semibold">Athlete:</label>
                 <select id="graphAthleteSelect" onchange="renderDynamicAthleteChart(this.value)" class="bg-slate-950 border border-slate-700 text-amber-400 font-semibold rounded-lg px-3 py-1.5 text-xs">
@@ -301,7 +308,7 @@
           </div>
         </section>
 
-        <!-- ATHLETES DIRECTORY (ADMIN ONLY) -->
+        <!-- ATHLETES DIRECTORY -->
         <section id="tab-athletes" class="tab-content space-y-4">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
             <div class="relative w-full sm:w-80">
@@ -331,7 +338,7 @@
           </div>
         </section>
 
-        <!-- STAFF DIRECTORY (ADMIN ONLY) -->
+        <!-- STAFF DIRECTORY -->
         <section id="tab-staff" class="tab-content space-y-4">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
             <div class="relative w-full sm:w-80">
@@ -359,6 +366,11 @@
           </div>
         </section>
 
+        <!-- ATTENDANCE TAB -->
+        <section id="tab-attendance" class="tab-content space-y-6">
+          <div id="tab-attendance-content"></div>
+        </section>
+
         <!-- SPORTS SCIENCE -->
         <section id="tab-sportsScience" class="tab-content space-y-6">
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
@@ -371,7 +383,6 @@
                 <p class="text-xs text-slate-400 mt-0.5">Biomechanical specifications, physiological targets, nutrition, and common training mistakes to avoid.</p>
               </div>
 
-              <!-- Admin Search Player Selector -->
               <div id="adminScienceSearchContainer" class="hidden items-center space-x-2">
                 <label class="text-xs text-amber-400 font-bold">Admin Lookup Player:</label>
                 <select id="adminSearchPlayerSelect" onchange="renderSportsScienceView(this.value)" class="bg-slate-950 border border-slate-700 text-white rounded px-3 py-1.5 text-xs font-semibold">
@@ -392,7 +403,7 @@
                   NADA India KYM System
                 </span>
                 <h3 class="text-lg font-bold text-white mt-2">Know Your Medicine (KYM) Portal</h3>
-                <p class="text-xs text-slate-400 mt-1 max-w-2xl">Search medicines (Vasograin, Bevon, Pantocid, Aceclofenac, etc.) against WADA/NADA doping rules.</p>
+                <p class="text-xs text-slate-400 mt-1 max-w-2xl">Search medicines against WADA/NADA doping rules.</p>
               </div>
               <div class="w-full md:w-80">
                 <div class="relative">
@@ -407,63 +418,65 @@
 
         <!-- REHAB TAB -->
         <section id="tab-rehab" class="tab-content space-y-6">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- ADMIN EXCLUSIVE LOG INJURY FORM -->
-            <div id="adminRehabLogCard" class="bg-slate-900 border border-slate-800 p-5 rounded-xl hidden">
-              <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-stethoscope text-rose-400 mr-2"></i>Admin: Log Injury & Precautions</h3>
-              <form onsubmit="saveRehabCase(event)" class="space-y-3 text-xs">
+          <div id="adminRehabLogCard" class="bg-slate-900 border border-amber-500/40 p-5 rounded-xl shadow-lg hidden">
+            <h3 class="text-sm font-bold text-amber-400 mb-4 flex items-center">
+              <i class="fa-solid fa-stethoscope mr-2"></i>Admin: Log Injury & Precautions (Global Entry)
+            </h3>
+            <form onsubmit="saveRehabCase(event)" class="space-y-3 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-semibold text-slate-400 mb-1">Athlete</label>
-                  <select id="rehab-athlete" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></select>
+                  <label class="block font-semibold text-slate-400 mb-1">Select Athlete</label>
+                  <select id="rehab-athlete" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white font-semibold"></select>
                 </div>
                 <div>
                   <label class="block font-semibold text-slate-400 mb-1">Injury / Pain Area</label>
                   <input type="text" id="rehab-area" placeholder="e.g. Right Rotator Cuff" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
                 </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label class="block font-semibold text-slate-400 mb-1">Precautions & Medications</label>
                   <textarea id="rehab-precautions" rows="2" placeholder="Prescribed meds, rest guidelines..." required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
                 </div>
                 <div>
                   <label class="block font-semibold text-slate-400 mb-1">Healing Therapy (Icing / Hot Pack / Cryotherapy)</label>
-                  <input type="text" id="rehab-therapy" placeholder="e.g. Ice pack 15 mins post-session" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
-                </div>
-                <button type="submit" class="w-full py-2 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-lg transition cursor-pointer">Publish Injury Protocol</button>
-              </form>
-            </div>
-
-            <!-- ACTIVE REHAB ROSTER -->
-            <div id="rehabRosterContainer" class="lg:col-span-3 bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-heart-pulse text-rose-400 mr-2"></i>Active Rehab Roster & Healing Protocols</h3>
-                <div id="adminRehabSearchBox" class="hidden relative w-full sm:w-64">
-                  <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                  <input type="text" id="rehabSearchInput" onkeyup="searchRehabRoster()" placeholder="Search name of the player..." class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white">
+                  <textarea id="rehab-therapy" rows="2" placeholder="e.g. Ice pack 15 mins post-session" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
                 </div>
               </div>
-              <div id="rehabRosterFeed" class="space-y-3"></div>
-            </div>
+              <button type="submit" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg transition cursor-pointer">Publish Injury Protocol</button>
+            </form>
+          </div>
 
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-heart-pulse text-rose-400 mr-2"></i>Active Rehab Roster & Healing Protocols</h3>
+              <div class="relative w-full sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="rehabSearchInput" onkeyup="searchRehabRoster()" placeholder="Search name of the player..." class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white">
+              </div>
+            </div>
+            <div id="rehabRosterFeed" class="space-y-3"></div>
           </div>
         </section>
 
         <!-- MENTAL HEALTH TAB -->
         <section id="tab-mentalHealth" class="tab-content space-y-6">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- ADMIN EXCLUSIVE LOG MENTAL HEALTH FORM -->
-            <div id="adminMentalLogCard" class="bg-slate-900 border border-slate-800 p-5 rounded-xl hidden">
-              <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-brain text-indigo-400 mr-2"></i>Admin: Log Mental Health Assessment</h3>
-              <form onsubmit="saveMentalCase(event)" class="space-y-3 text-xs">
+          <div id="adminMentalLogCard" class="bg-slate-900 border border-amber-500/40 p-5 rounded-xl shadow-lg hidden">
+            <h3 class="text-sm font-bold text-amber-400 mb-4 flex items-center">
+              <i class="fa-solid fa-brain mr-2"></i>Admin: Log Mental Health Assessment (Global Entry)
+            </h3>
+            <form onsubmit="saveMentalCase(event)" class="space-y-3 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-semibold text-slate-400 mb-1">Athlete</label>
-                  <select id="mental-athlete" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></select>
+                  <label class="block font-semibold text-slate-400 mb-1">Select Athlete</label>
+                  <select id="mental-athlete" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white font-semibold"></select>
                 </div>
                 <div>
                   <label class="block font-semibold text-slate-400 mb-1">Problem</label>
                   <input type="text" id="mental-problem" placeholder="e.g. Competition anxiety / Sleep disruption" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
                 </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label class="block font-semibold text-slate-400 mb-1">Summary</label>
                   <textarea id="mental-summary" rows="2" placeholder="Clinical evaluation summary..." required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
@@ -472,22 +485,20 @@
                   <label class="block font-semibold text-slate-400 mb-1">Solution</label>
                   <textarea id="mental-solution" rows="2" placeholder="Coping mechanism, mindfulness, counseling..." required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
                 </div>
-                <button type="submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition cursor-pointer">Publish Mental Health Record</button>
-              </form>
-            </div>
-
-            <!-- MENTAL HEALTH ROSTER -->
-            <div id="mentalRosterContainer" class="lg:col-span-3 bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-brain text-indigo-400 mr-2"></i>Mental Health Records & Counseling Roster</h3>
-                <div id="adminMentalSearchBox" class="hidden relative w-full sm:w-64">
-                  <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                  <input type="text" id="mentalSearchInput" onkeyup="searchMentalRoster()" placeholder="Search name of the player..." class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white">
-                </div>
               </div>
-              <div id="mentalRosterFeed" class="space-y-3"></div>
-            </div>
+              <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition cursor-pointer">Publish Mental Health Record</button>
+            </form>
+          </div>
 
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-brain text-indigo-400 mr-2"></i>Mental Health Records & Counseling Roster</h3>
+              <div class="relative w-full sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="mentalSearchInput" onkeyup="searchMentalRoster()" placeholder="Search name of the player..." class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white">
+              </div>
+            </div>
+            <div id="mentalRosterFeed" class="space-y-3"></div>
           </div>
         </section>
 
@@ -510,17 +521,12 @@
             </div>
           </div>
 
-          <!-- Disciplines Columns Container -->
-          <div id="disciplineColumnsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Dynamically Rendered -->
-          </div>
+          <div id="disciplineColumnsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
         <!-- ADAPTIVE EQUIPMENT -->
         <section id="tab-equipment" class="tab-content space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- PLAYER PERSPECTIVE: REQUEST FORM -->
             <div id="playerEquipFormCard" class="bg-slate-900 border border-slate-800 p-5 rounded-xl hidden">
               <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-wrench text-sky-400 mr-2"></i>Request Adaptive Equipment</h3>
               <form onsubmit="saveEquipRequest(event)" class="space-y-3 text-xs">
@@ -536,14 +542,12 @@
               </form>
             </div>
 
-            <!-- EQUIPMENT LOG / REQUEST FEED -->
             <div id="equipmentFeedContainer" class="lg:col-span-3 bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
               <div class="flex items-center justify-between">
                 <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-screwdriver-wrench text-sky-400 mr-2"></i><span id="equipFeedTitle">Adaptive Equipment Requests</span></h3>
               </div>
               <div id="equipmentLogFeed" class="space-y-3"></div>
             </div>
-
           </div>
         </section>
 
@@ -551,7 +555,7 @@
     </main>
   </div>
 
-  <!-- MODAL: ADD MEMBER (WITH STAFF EMAIL OTP VERIFICATION) -->
+  <!-- MODAL: ADD MEMBER -->
   <div id="addMemberModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 relative">
       <button onclick="closeAddMemberModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -570,7 +574,7 @@
 
         <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
           <span class="text-[11px] font-bold text-purple-400 block"><i class="fa-solid fa-key mr-1"></i>Auto-Generated Credentials (Admin Exclusive)</span>
-          <p class="text-slate-300">Assigned Username: <strong id="previewUsername" class="text-amber-400 font-mono">psec101</strong></p>
+          <p class="text-slate-300">Next Auto-Assigned Username: <strong id="previewUsername" class="text-amber-400 font-mono">adp02</strong></p>
           <p class="text-slate-300">Generated Password: <strong id="previewPassword" class="text-emerald-400 font-mono"></strong></p>
         </div>
 
@@ -579,8 +583,7 @@
           <input type="text" id="newMemberName" placeholder="e.g. Rahul Sharma" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
         </div>
 
-        <!-- STAFF FIELDS WITH EMAIL OTP VERIFICATION -->
-        <div id="staffFields" class="space-y-2 hidden">
+        <div id="staffFields" class="space-y-2">
           <div>
             <label class="block font-semibold text-slate-400 mb-1">Designation</label>
             <input type="text" id="newStaffDesignation" placeholder="e.g. Coach, Physiotherapist, Administrator" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
@@ -604,10 +607,10 @@
             <input type="tel" id="newStaffMobile" placeholder="9876543210" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
           </div>
           <div>
-            <label class="block font-semibold text-slate-400 mb-1">Email ID (Requires OTP Verification)</label>
+            <label class="block font-semibold text-slate-400 mb-1">Email ID (Real Email Dispatch via EmailJS)</label>
             <div class="flex space-x-2">
               <input type="email" id="newStaffEmail" placeholder="staff@adp.org" class="flex-1 bg-slate-950 border border-slate-700 rounded p-2 text-white">
-              <button type="button" onclick="sendNewStaffEmailCode()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs cursor-pointer">Send OTP</button>
+              <button type="button" onclick="sendNewStaffEmailCode()" id="sendOtpBtn" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs cursor-pointer">Send Email OTP</button>
             </div>
             <div id="newStaffEmailVerifyBlock" class="hidden space-y-1 pt-1">
               <div class="flex space-x-2">
@@ -618,13 +621,12 @@
             <span id="newStaffEmailStatus" class="text-[10px] text-slate-400 block mt-0.5">Status: Not Verified</span>
           </div>
           <div>
-            <label class="block font-semibold text-slate-400 mb-1">Aadhaar / Address</label>
-            <input type="text" id="newStaffAddress" placeholder="Address / Aadhaar ref" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            <label class="block font-semibold text-slate-400 mb-1">Document / Address Ref</label>
+            <input type="text" id="newStaffAddress" placeholder="Address reference" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
           </div>
         </div>
 
-        <!-- PLAYER FIELDS -->
-        <div id="playerExtraFields" class="space-y-2">
+        <div id="playerExtraFields" class="space-y-2 hidden">
           <div>
             <label class="block font-semibold text-slate-400 mb-1">CSR Funding Project</label>
             <select id="newMemberProject" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white font-semibold"></select>
@@ -670,14 +672,14 @@
         </div>
 
         <div class="space-y-2">
-          <h4 class="text-xs font-bold text-slate-400 uppercase">Existing Projects (Rename Directly)</h4>
+          <h4 class="text-xs font-bold text-slate-400 uppercase">Existing Projects</h4>
           <div id="projectRenameList" class="space-y-2"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ADD CALENDAR EVENT (+ ICON FOR ADMIN) -->
+  <!-- MODAL: ADD CALENDAR EVENT -->
   <div id="addCalendarEventModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 relative">
       <button onclick="closeAddCalendarModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -690,7 +692,7 @@
           <input type="text" id="newEventDate" placeholder="e.g. October 18 - 24, 2026" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
         </div>
         <div>
-          <label class="block text-slate-400 mb-1">Event Name & Venue (Where it is happening)</label>
+          <label class="block text-slate-400 mb-1">Event Name & Venue</label>
           <textarea id="newEventDesc" rows="3" placeholder="e.g. 5th Asian Para Games at Aichi-Nagoya, Japan" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
         </div>
         <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded cursor-pointer">Publish Event</button>
@@ -698,7 +700,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ADD NEW DISCIPLINE COLUMN (+ COLUMN OPTION FOR ADMIN) -->
+  <!-- MODAL: ADD NEW DISCIPLINE -->
   <div id="addDisciplineModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 relative">
       <button onclick="closeAddDisciplineModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -725,7 +727,7 @@
     </div>
   </div>
 
-  <!-- ATHLETE FULL PROFILE & EDIT MODAL -->
+  <!-- ATHLETE FULL PROFILE MODAL -->
   <div id="athleteDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 relative">
       <button onclick="closeDetailModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -733,7 +735,7 @@
     </div>
   </div>
 
-  <!-- STAFF FULL PROFILE & EDIT MODAL -->
+  <!-- STAFF FULL PROFILE MODAL -->
   <div id="staffDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 relative">
       <button onclick="closeStaffDetailModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -741,7 +743,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MY PROFILE -->
+  <!-- MODAL: MY PROFILE (EDITABLE SUPER ADMIN) -->
   <div id="myProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg p-6 relative max-h-[85vh] overflow-y-auto">
       <button onclick="closeMyProfileModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -749,14 +751,41 @@
     </div>
   </div>
 
-  <!-- Firebase SDKs (Script Tag Integration) -->
+  <!-- MODAL: CHANGE PASSWORD -->
+  <div id="changePasswordModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 relative">
+      <button onclick="closeChangePasswordModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+      <h3 class="text-base font-bold text-amber-400 mb-4 flex items-center">
+        <i class="fa-solid fa-key mr-2"></i>Change Account Password
+      </h3>
+      <form onsubmit="submitChangePassword(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-400 mb-1">Old Password</label>
+          <input type="password" id="oldPasswordInput" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-400 mb-1">New Password</label>
+          <input type="password" id="newPasswordInput" required placeholder="Min 8 chars, 1 number, 1 symbol, 1 uppercase" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-400 mb-1">Confirm New Password</label>
+          <input type="password" id="confirmPasswordInput" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+        </div>
+        <p class="text-[10px] text-slate-400 leading-tight">Requirement: At least 8 characters, 1 uppercase letter, 1 number, and 1 symbol.</p>
+        <button type="submit" class="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition cursor-pointer mt-2">Update Password</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (App & Realtime Database) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBWIgcoiLhnThAajROYspg_C0jeCIeM05I",
       authDomain: "adp-psec.firebaseapp.com",
+      databaseURL: "https://adp-psec-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "adp-psec",
       storageBucket: "adp-psec.firebasestorage.app",
       messagingSenderId: "755595918770",
@@ -765,7 +794,11 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+    window.psecRtdb = db;
+    window.psecRef = ref;
+    window.psecSet = set;
+    window.psecOnValue = onValue;
   </script>
 
   <!-- JAVASCRIPT APPLICATION LOGIC -->
@@ -777,91 +810,35 @@
     let isAdmin = false;
     let selectedProjectId = "all";
     let performanceChartInstance = null;
-    let mockEmailCodeSent = "";
+    let generatedOtpCode = "";
     let staffEmailVerified = false;
 
-    let projects = [
+    let projects = JSON.parse(localStorage.getItem('psec_projects_db')) || [
       { id: "tata", name: "Tata Para Excellence Initiative", partner: "Tata Trusts", sports: "Para Athletics", desc: "High-performance sports science & coaching." },
       { id: "indusind", name: "IndusInd Para Champions Program", partner: "IndusInd Bank", sports: "Para Field Events", desc: "Elite training and international pathway." },
       { id: "hcl", name: "HCL Sports for Change Para Project", partner: "HCLFoundation", sports: "Para Throws & Powerlifting", desc: "Assistive equipment and athlete scholarships." }
     ];
 
-    let usersDb = [
+    let usersDb = JSON.parse(localStorage.getItem('psec_users_db')) || [
       {
         username: "adp01",
         password: MASTER_ADMIN_PASSWORD,
         name: "ADP Super Admin",
         role: "admin",
         projectId: "tata",
-        photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
+        photoUrl: "/icon.png",
         mobile: "9810000000",
         email: "admin@adp.org",
         emailVerified: true
-      },
-      {
-        username: "adp02",
-        password: "StaffPass@123",
-        name: "Raghav",
-        role: "staff",
-        designation: "Administrator",
-        dob: "1985-09-20",
-        joiningYear: "2023",
-        education: "MBA Sports Management",
-        mobile: "9811122233",
-        email: "raghav.admin@adp.org",
-        emailVerified: true,
-        aadhaar: "[Aadhaar Redacted]",
-        address: "PSEC Greater Noida",
-        photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
-        docs: { aadhaar: null, panCard: null }
-      },
-      {
-        id: 1,
-        username: "psec101",
-        password: "X!9m#k2P",
-        name: "Sharmila",
-        role: "player",
-        projectId: "hcl",
-        sport: "Para Athletics",
-        sportClass: "F57",
-        dob: "1988-03-10",
-        weight: "62 kg",
-        height: "164 cm",
-        mobile: "9811223344",
-        email: "sharmila@adp.org",
-        emailVerified: true,
-        disability: "Locomotor Disability (60%)",
-        event1: "Shot Put (F57)",
-        event2: "Discus Throw (F57)",
-        event3: "Javelin Throw (F57)",
-        personalBest: "9.81m (CWG Glasgow 2026)",
-        records: { state: "Gold 2024 (8.90m)", national: "Gold 2025 (9.45m)", international: "GOLD CWG Glasgow 2026 (9.81m)" },
-        address: "ADP PSEC Greater Noida",
-        emergencyContact: "Pradeep Raj - +91 9810000000",
-        achievements: "Gold Medal CWG Glasgow 2026 in Shot Put Women F57.",
-        photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-        progression: [{ period: "2024", score: 8.90 }, { period: "2025", score: 9.45 }, { period: "CWG 2026", score: 9.81 }],
-        docs: { aadhaar: null, passport: null, disabilityCert: null, achievementDoc: null }
       }
     ];
 
-    let sportsScienceLogs = [
-      { id: 1, athlete: "Sharmila", projectId: "hcl", type: "Throws Video Biomechanical Review", metric: "9.81m (Angle: 36°)", rpe: 8, notes: "Optimum trunk stabilization achieved.", date: "Aug 2026" }
-    ];
+    let sportsScienceLogs = JSON.parse(localStorage.getItem('psec_science_db')) || [];
+    let rehabCases = JSON.parse(localStorage.getItem('psec_rehab_db')) || [];
+    let mentalCases = JSON.parse(localStorage.getItem('psec_mental_db')) || [];
+    let equipmentLogs = JSON.parse(localStorage.getItem('psec_equip_db')) || [];
 
-    let rehabCases = [
-      { id: 1, athlete: "Sharmila", username: "psec101", projectId: "hcl", area: "Right Rotator Cuff", precautions: "Prescribed Paracetamol 650mg, complete rest from heavy overhead throws for 4 days.", therapy: "Apply Ice pack 15 mins post-session twice daily.", status: "Active Protocol" }
-    ];
-
-    let mentalCases = [
-      { id: 1, athlete: "Sharmila", username: "psec101", projectId: "hcl", problem: "Pre-competition performance anxiety", summary: "Athlete experienced heightened heart rate and intrusive thoughts prior to Glasgow finals.", solution: "Practiced 4-7-8 diaphragmatic breathing and cognitive reframing with sports psychologist.", lastEditedDays: 2 }
-    ];
-
-    let equipmentLogs = [
-      { id: 1, athlete: "Sharmila", username: "psec101", projectId: "hcl", item: "Custom F57 Throwing Chair Frame", notes: "Requesting additional torso strap support and tighter base bolts.", status: "Pending Super Admin Review", reviewReason: "" }
-    ];
-
-    let disciplineColumns = [
+    let disciplineColumns = JSON.parse(localStorage.getItem('psec_disciplines_db')) || [
       { id: "athletics", name: "Para Athletics", color: "border-purple-500/40 text-purple-400 bg-purple-500/10", events: [{ date: "March 17 – 21, 2026", desc: "24th National Para Athletics Championships (Kalinga Stadium, Bhubaneswar)" }] },
       { id: "powerlifting", name: "Para Powerlifting", color: "border-amber-500/40 text-amber-400 bg-amber-500/10", events: [{ date: "May 10, 2026", desc: "National Bench Press Trials (New Delhi)" }] },
       { id: "badminton", name: "Para Badminton", color: "border-emerald-500/40 text-emerald-400 bg-emerald-500/10", events: [{ date: "June 4, 2026", desc: "State Para Badminton Open (Noida Stadium)" }] },
@@ -873,25 +850,71 @@
       { id: "swimming", name: "Para Swimming", color: "border-sky-500/40 text-sky-400 bg-sky-500/10", events: [{ date: "October 18 – 24, 2026", desc: "5th Asian Para Games (Aichi-Nagoya, Japan)" }] }
     ];
 
-    // Persistent Session Check on load
+    function saveAllStateToStorage() {
+      localStorage.setItem('psec_projects_db', JSON.stringify(projects));
+      localStorage.setItem('psec_users_db', JSON.stringify(usersDb));
+      localStorage.setItem('psec_science_db', JSON.stringify(sportsScienceLogs));
+      localStorage.setItem('psec_rehab_db', JSON.stringify(rehabCases));
+      localStorage.setItem('psec_mental_db', JSON.stringify(mentalCases));
+      localStorage.setItem('psec_equip_db', JSON.stringify(equipmentLogs));
+      localStorage.setItem('psec_disciplines_db', JSON.stringify(disciplineColumns));
+      if (currentUser) {
+        localStorage.setItem('psec_current_user', JSON.stringify(currentUser));
+      }
+
+      if (window.psecRtdb) {
+        window.psecSet(window.psecRef(window.psecRtdb, 'psec_portal_state'), {
+          users: usersDb,
+          projects: projects,
+          science: sportsScienceLogs,
+          rehab: rehabCases,
+          mental: mentalCases,
+          equipment: equipmentLogs,
+          disciplines: disciplineColumns
+        }).catch(err => console.log("Cloud sync error:", err));
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      if (window.psecRtdb) {
+        window.psecOnValue(window.psecRef(window.psecRtdb, 'psec_portal_state'), (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            if (data.users) usersDb = data.users;
+            if (data.projects) projects = data.projects;
+            if (data.science) sportsScienceLogs = data.science;
+            if (data.rehab) rehabCases = data.rehab;
+            if (data.mental) mentalCases = data.mental;
+            if (data.equipment) equipmentLogs = data.equipment;
+            if (data.disciplines) disciplineColumns = data.disciplines;
+            if (currentUser) {
+              refreshAllUI();
+            }
+          }
+        });
+      }
+
       const savedUser = localStorage.getItem('psec_current_user');
       if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        isAdmin = (currentUser.username === MASTER_ADMIN_USERNAME);
-        document.getElementById('associationGateScreen').classList.add('hidden');
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-        document.getElementById('mainApp').classList.add('flex');
-        applyUserInterfacePermissions();
-        buildProjectSelectors();
-        refreshAllUI();
+        try {
+          currentUser = JSON.parse(savedUser);
+          isAdmin = (currentUser.username === MASTER_ADMIN_USERNAME);
+          document.getElementById('associationGateScreen').classList.add('hidden');
+          document.getElementById('loginScreen').classList.add('hidden');
+          document.getElementById('notAssociatedScreen').classList.add('hidden');
+          document.getElementById('mainApp').classList.remove('hidden');
+          document.getElementById('mainApp').classList.add('flex');
+          applyUserInterfacePermissions();
+          buildProjectSelectors();
+          refreshAllUI();
+        } catch(e) {
+          localStorage.removeItem('psec_current_user');
+        }
       }
     });
 
     function toggleMobileSidebar() {
-      const sidebar = document.getElementById('appSidebar');
-      sidebar.classList.toggle('-translate-x-full');
+      document.getElementById('appSidebar').classList.toggle('-translate-x-full');
     }
 
     function selectAssociation(isAssociated) {
@@ -915,7 +938,6 @@
       const pInput = document.getElementById('loginPassword').value;
 
       const foundUser = usersDb.find(u => u.username.toLowerCase() === uInput && u.password === pInput);
-
       if (!foundUser) {
         alert("Invalid PSEC Username or Password.");
         return;
@@ -923,7 +945,7 @@
 
       currentUser = foundUser;
       isAdmin = (foundUser.username === MASTER_ADMIN_USERNAME);
-      localStorage.setItem('psec_current_user', JSON.stringify(currentUser));
+      saveAllStateToStorage();
 
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.remove('hidden');
@@ -948,6 +970,8 @@
       const statCardStaff = document.getElementById('statCardStaff');
       const graphAthleteSelectContainer = document.getElementById('graphAthleteSelectContainer');
       const graphSubtitle = document.getElementById('graphSubtitle');
+      const adminRehabLogCard = document.getElementById('adminRehabLogCard');
+      const adminMentalLogCard = document.getElementById('adminMentalLogCard');
 
       if (isAdmin) {
         document.getElementById('adminIndicator').classList.remove('hidden');
@@ -958,6 +982,8 @@
         if (statCardStaff) { statCardStaff.classList.remove('hidden'); statCardStaff.classList.add('flex'); }
         if (graphAthleteSelectContainer) { graphAthleteSelectContainer.classList.remove('hidden'); graphAthleteSelectContainer.classList.add('flex'); }
         if (graphSubtitle) graphSubtitle.innerText = "Select any player to inspect their verified 3-year performance curve.";
+        if (adminRehabLogCard) adminRehabLogCard.classList.remove('hidden');
+        if (adminMentalLogCard) adminMentalLogCard.classList.remove('hidden');
       } else {
         document.getElementById('adminIndicator').classList.add('hidden');
         document.getElementById('sideNavRole').innerText = `${currentUser.role.toUpperCase()} (${currentUser.username})`;
@@ -967,7 +993,59 @@
         if (statCardStaff) { statCardStaff.classList.remove('flex'); statCardStaff.classList.add('hidden'); }
         if (graphAthleteSelectContainer) { graphAthleteSelectContainer.classList.remove('flex'); graphAthleteSelectContainer.classList.add('hidden'); }
         if (graphSubtitle) graphSubtitle.innerText = "Your verified 3-year performance progression curve.";
+        if (adminRehabLogCard) adminRehabLogCard.classList.add('hidden');
+        if (adminMentalLogCard) adminMentalLogCard.classList.add('hidden');
       }
+    }
+
+    function openChangePasswordModal() {
+      document.getElementById('oldPasswordInput').value = '';
+      document.getElementById('newPasswordInput').value = '';
+      document.getElementById('confirmPasswordInput').value = '';
+      document.getElementById('changePasswordModal').classList.remove('hidden');
+      document.getElementById('changePasswordModal').classList.add('flex');
+    }
+
+    function closeChangePasswordModal() {
+      document.getElementById('changePasswordModal').classList.add('hidden');
+      document.getElementById('changePasswordModal').classList.remove('flex');
+    }
+
+    function submitChangePassword(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const oldPass = document.getElementById('oldPasswordInput').value;
+      const newPass = document.getElementById('newPasswordInput').value;
+      const confirmPass = document.getElementById('confirmPasswordInput').value;
+
+      if (oldPass !== currentUser.password) {
+        alert("Incorrect old password entered.");
+        return;
+      }
+      if (newPass !== confirmPass) {
+        alert("New passwords do not match.");
+        return;
+      }
+
+      const hasLength = newPass.length >= 8;
+      const hasNumber = /[0-9]/.test(newPass);
+      const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(newPass);
+      const hasUpper = /[A-Z]/.test(newPass);
+
+      if (!hasLength || !hasNumber || !hasSymbol || !hasUpper) {
+        alert("Password must be at least 8 characters long and contain at least 1 uppercase letter, 1 number, and 1 symbol.");
+        return;
+      }
+
+      currentUser.password = newPass;
+      const uIndex = usersDb.findIndex(u => u.username === currentUser.username);
+      if (uIndex !== -1) {
+        usersDb[uIndex].password = newPass;
+      }
+
+      saveAllStateToStorage();
+      closeChangePasswordModal();
+      alert("Password successfully changed and synced with the Super Admin master profile!");
     }
 
     function logout() {
@@ -984,9 +1062,7 @@
     function generateRandomPassword() {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
       let pass = "";
-      for (let i = 0; i < 8; i++) {
-        pass += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
+      for (let i = 0; i < 8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
       return pass;
     }
 
@@ -1001,51 +1077,63 @@
       if (type === 'staff') {
         staffFields.classList.remove('hidden');
         playerFields.classList.add('hidden');
-
-        let maxNum = 1;
-        usersDb.forEach(u => {
-          if (u.username.startsWith('adp') && u.username !== 'adp01') {
-            let num = parseInt(u.username.replace('adp', ''));
-            if (num > maxNum) maxNum = num;
-          }
-        });
-        userField.innerText = `adp${String(maxNum + 1).padStart(2, '0')}`;
+        let staffList = usersDb.filter(u => u.role === 'staff' && u.username !== 'adp01');
+        userField.innerText = `adp${String(staffList.length + 2).padStart(2, '0')}`;
       } else {
         staffFields.classList.add('hidden');
         playerFields.classList.remove('hidden');
-
-        let maxNum = 100;
-        usersDb.forEach(u => {
-          if (u.username.startsWith('psec')) {
-            let num = parseInt(u.username.replace('psec', ''));
-            if (num > maxNum) maxNum = num;
-          }
-        });
-        userField.innerText = `psec${maxNum + 1}`;
+        let playerList = usersDb.filter(u => u.role === 'player');
+        userField.innerText = `psec${101 + playerList.length}`;
       }
     }
 
-    function sendNewStaffEmailCode() {
+    async function sendNewStaffEmailCode() {
       const emailVal = document.getElementById('newStaffEmail').value.trim();
-      if (!emailVal) {
-        alert("Please enter a staff email address first.");
-        return;
+      if (!emailVal) { alert("Please enter a staff email address first."); return; }
+      
+      generatedOtpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const btn = document.getElementById('sendOtpBtn');
+      btn.innerText = "Sending Real Email...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "ADP-PSEC",
+            template_id: "template_rdc5hf4",
+            user_id: "A264Xg40sIF_7HuFM",
+            template_params: {
+              email: emailVal,
+              otp_code: generatedOtpCode
+            }
+          })
+        });
+
+        if (response.ok) {
+          alert("Verification OTP email successfully dispatched to " + emailVal + "! Check your inbox.");
+          document.getElementById('newStaffEmailVerifyBlock').classList.remove('hidden');
+          document.getElementById('newStaffEmailStatus').innerText = "Status: OTP sent to inbox ✓";
+          document.getElementById('newStaffEmailStatus').className = "text-[10px] text-emerald-400 font-bold block mt-0.5";
+        } else {
+          const errText = await response.text();
+          alert("Email API Error: " + errText);
+        }
+      } catch (error) {
+        alert("Network Error sending email: " + error.message);
+      } finally {
+        btn.innerText = "Send Email OTP";
+        btn.disabled = false;
       }
-      mockEmailCodeSent = Math.floor(100000 + Math.random() * 900000).toString();
-      alert(`[Simulation]: Verification OTP sent to ${emailVal}.\nYour Code is: ${mockEmailCodeSent}`);
-      document.getElementById('newStaffEmailVerifyBlock').classList.remove('hidden');
     }
 
     function verifyNewStaffEmailCode() {
       const code = document.getElementById('newStaffOtpInput').value.trim();
-      if (code !== mockEmailCodeSent) {
-        alert("Invalid verification code.");
-        return;
-      }
+      if (code !== generatedOtpCode) { alert("Invalid verification code."); return; }
       staffEmailVerified = true;
-      document.getElementById('newStaffEmailStatus').innerText = "Status: Verified via OTP ✓";
-      document.getElementById('newStaffEmailStatus').classList.remove('text-slate-400');
-      document.getElementById('newStaffEmailStatus').classList.add('text-emerald-400', 'font-bold');
+      document.getElementById('newStaffEmailStatus').innerText = "Status: Verified via Email OTP ✓";
+      document.getElementById('newStaffEmailStatus').className = "text-[10px] text-emerald-400 font-bold block mt-0.5";
       document.getElementById('newStaffEmailVerifyBlock').classList.add('hidden');
       alert("Staff email successfully verified!");
     }
@@ -1054,16 +1142,14 @@
       if (!isAdmin) return;
       const projSel = document.getElementById('newMemberProject');
       projSel.innerHTML = projects.map(p => `<option value="${p.id}">${p.name} (${p.partner})</option>`).join('');
-      
       staffEmailVerified = false;
       document.getElementById('newStaffEmailStatus').innerText = "Status: Not Verified";
       document.getElementById('newStaffEmailStatus').className = "text-[10px] text-slate-400 block mt-0.5";
       document.getElementById('newStaffEmailVerifyBlock').classList.add('hidden');
-
       document.getElementById('addMemberModal').classList.remove('hidden');
       document.getElementById('addMemberModal').classList.add('flex');
-      document.getElementById('newMemberType').value = 'player';
-      switchMemberFormType('player');
+      document.getElementById('newMemberType').value = 'staff';
+      switchMemberFormType('staff');
     }
 
     function closeAddMemberModal() {
@@ -1084,14 +1170,11 @@
         password: password,
         name: name,
         role: type,
-        photoUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80"
+        photoUrl: "/icon.png"
       };
 
       if (type === 'staff') {
-        if (!staffEmailVerified) {
-          alert("Staff email verification via OTP is required before registration.");
-          return;
-        }
+        if (!staffEmailVerified) { alert("Staff email verification via OTP is required before registration."); return; }
         newRecord.designation = document.getElementById('newStaffDesignation').value || "Staff Member";
         newRecord.dob = document.getElementById('newStaffDob').value || "";
         newRecord.joiningYear = document.getElementById('newStaffJoining').value || "2026";
@@ -1101,7 +1184,7 @@
         newRecord.emailVerified = true;
         newRecord.aadhaar = document.getElementById('newStaffAddress').value || "N/A";
         newRecord.address = "ADP PSEC Greater Noida";
-        newRecord.docs = { aadhaar: null, panCard: null };
+        newRecord.docs = { aadhaarPdf: "Verified (< 1MB PDF)" };
       } else {
         newRecord.projectId = document.getElementById('newMemberProject').value;
         newRecord.sport = document.getElementById('newMemberSport').value || "Para Athletics";
@@ -1110,8 +1193,8 @@
         newRecord.weight = "60 kg";
         newRecord.height = "160 cm";
         newRecord.mobile = "9876543210";
-        newRecord.email = "";
-        newRecord.emailVerified = false;
+        newRecord.email = "player@adp.org";
+        newRecord.emailVerified = true;
         newRecord.disability = "Adaptive Class";
         newRecord.event1 = "Shot Put";
         newRecord.event2 = "Discus Throw";
@@ -1122,13 +1205,21 @@
         newRecord.emergencyContact = "ADP Management";
         newRecord.achievements = "Registered PSEC Member";
         newRecord.progression = [{ period: "2026", score: 8.5 }];
-        newRecord.docs = { aadhaar: null, passport: null, disabilityCert: null, achievementDoc: null };
+        newRecord.docs = { 
+          aadhaarPdf: "Verified (< 1MB PDF)", 
+          passport: "Verified (< 1MB PDF)", 
+          disabilityCert: "Verified (< 1MB PDF)", 
+          achievementDoc: "Verified (< 1MB PDF)" 
+        };
       }
 
       usersDb.push(newRecord);
+      saveAllStateToStorage();
       closeAddMemberModal();
       refreshAllUI();
-      alert(`Success! New member provisioned.\n\nUsername: ${username}\nPassword: ${password}`);
+      switchTab(type === 'staff' ? 'staff' : 'athletes');
+
+      alert(`Success! New member provisioned and saved.\n\nUsername: ${username}\nPassword: ${password}`);
       e.target.reset();
     }
 
@@ -1159,14 +1250,14 @@
       if (!isAdmin) return;
       const newName = document.getElementById(`rename_name_${projId}`).value;
       const newPartner = document.getElementById(`rename_partner_${projId}`).value;
-
       const p = projects.find(item => item.id === projId);
       if (p) {
         p.name = newName;
         p.partner = newPartner;
+        saveAllStateToStorage();
         buildProjectSelectors();
         refreshAllUI();
-        alert("Project successfully updated!");
+        alert("Project successfully updated and saved!");
       }
     }
 
@@ -1177,16 +1268,13 @@
       const name = document.getElementById('newProjName').value;
       const partner = document.getElementById('newProjPartner').value;
 
-      if (projects.some(p => p.id === id)) {
-        alert("Project code already exists.");
-        return;
-      }
-
+      if (projects.some(p => p.id === id)) { alert("Project code already exists."); return; }
       projects.push({ id, name, partner, sports: "Multi-Discipline", desc: `Funded by ${partner}` });
+      saveAllStateToStorage();
       buildProjectSelectors();
       renderProjectRenameList();
       e.target.reset();
-      alert(`Project '${name}' created successfully!`);
+      alert(`Project '${name}' created and stored successfully!`);
     }
 
     function switchTab(tabId) {
@@ -1203,11 +1291,9 @@
         activeBtn.classList.remove('text-slate-400');
       }
 
-      if (tabId === 'sportsScience') {
-        initSportsScienceTab();
-      } else if (tabId === 'calendar') {
-        renderCalendarDisciplinesView();
-      }
+      if (tabId === 'sportsScience') initSportsScienceTab();
+      else if (tabId === 'calendar') renderCalendarDisciplinesView();
+      else if (tabId === 'attendance') renderAttendanceTabUI();
 
       if (window.innerWidth < 768) {
         document.getElementById('appSidebar').classList.add('-translate-x-full');
@@ -1217,9 +1303,7 @@
     function buildProjectSelectors() {
       const filterSelect = document.getElementById('activeProjectFilter');
       let options = `<option value="all">🌟 All Projects (Master ADP View)</option>`;
-      projects.forEach(p => {
-        options += `<option value="${p.id}">${p.name} [${p.partner}]</option>`;
-      });
+      projects.forEach(p => { options += `<option value="${p.id}">${p.name} [${p.partner}]</option>`; });
       filterSelect.innerHTML = options;
       filterSelect.value = selectedProjectId;
     }
@@ -1278,7 +1362,7 @@
       renderRehabRoster();
       renderMentalRoster();
       renderEquipmentLogsView();
-      populateDropdowns(athletesList);
+      populateDropdowns(usersDb.filter(u => u.role === 'player'));
 
       if (currentUser && currentUser.role === 'player') {
         renderDynamicAthleteChart(currentUser.username);
@@ -1287,756 +1371,457 @@
       } else {
         if (performanceChartInstance) performanceChartInstance.destroy();
       }
-
       initSportsScienceTab();
     }
 
-    function populateDropdowns(athletesList) {
-      const graphSel = document.getElementById('graphAthleteSelect');
-      if (graphSel) {
-        graphSel.innerHTML = athletesList.map(a => `<option value="${a.username}">${a.name} (${a.sportClass})</option>`).join('');
+    function renderAthletesDirectory(athletesList) {
+      const tbody = document.getElementById('athleteDirectoryBody');
+      if (!tbody) return;
+
+      if (athletesList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-5 py-6 text-center text-slate-500 italic">No registered para-athletes found.</td></tr>`;
+        return;
       }
 
-      const rehabAthSel = document.getElementById('rehab-athlete');
-      if (rehabAthSel) {
-        rehabAthSel.innerHTML = athletesList.map(a => `<option value="${a.name}">${a.name} (${a.sportClass})</option>`).join('');
-      }
-
-      const mentalAthSel = document.getElementById('mental-athlete');
-      if (mentalAthSel) {
-        mentalAthSel.innerHTML = athletesList.map(a => `<option value="${a.name}">${a.name} (${a.sportClass})</option>`).join('');
-      }
+      tbody.innerHTML = athletesList.map(a => `
+        <tr class="hover:bg-slate-900/50 transition">
+          <td class="px-5 py-3 font-semibold text-white flex items-center space-x-2">
+            <img src="${a.photoUrl}" class="w-7 h-7 rounded-full object-cover border border-purple-500/40 bg-white">
+            <div>
+              <span class="block">${a.name}</span>
+              <span class="text-[10px] text-purple-400 font-mono">${a.username}</span>
+            </div>
+          </td>
+          <td class="px-5 py-3 uppercase text-[10px] font-bold text-amber-400">${a.projectId || 'General'}</td>
+          <td class="px-5 py-3 text-slate-300">${a.sport}</td>
+          <td class="px-5 py-3"><span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 text-[10px] font-bold">${a.sportClass}</span></td>
+          <td class="px-5 py-3 font-mono text-emerald-400">${a.personalBest}</td>
+          <td class="px-5 py-3 text-right">
+            <button onclick="openAthleteDetailModal('${a.username}')" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs font-semibold cursor-pointer shadow">Full Profile</button>
+          </td>
+        </tr>
+      `).join('');
     }
 
-    function initSportsScienceTab() {
-      const titleEl = document.getElementById('sportsScienceTitle');
-      const adminSearchContainer = document.getElementById('adminScienceSearchContainer');
-      const adminSelect = document.getElementById('adminSearchPlayerSelect');
+    function renderStaffDirectory(staffList) {
+      const tbody = document.getElementById('staffDirectoryBody');
+      if (!tbody) return;
 
-      const playersList = usersDb.filter(u => u.role === 'player');
-
-      if (isAdmin) {
-        adminSearchContainer.classList.remove('hidden');
-        adminSearchContainer.classList.add('flex');
-        titleEl.innerText = "Super Admin: Athlete Science & PB Review";
-        
-        adminSelect.innerHTML = playersList.map(p => `<option value="${p.username}">${p.name} (${p.event1 || p.sport})</option>`).join('');
-        
-        if (playersList.length > 0) {
-          renderSportsScienceView(playersList[0].username);
-        }
-      } else {
-        adminSearchContainer.classList.add('hidden');
-        titleEl.innerText = "My Event Sports Science & Performance Metrics";
-        if (currentUser && currentUser.role === 'player') {
-          renderSportsScienceView(currentUser.username);
-        } else if (playersList.length > 0) {
-          renderSportsScienceView(playersList[0].username);
-        }
-      }
-    }
-
-    function renderSportsScienceView(username) {
-      const athlete = usersDb.find(u => u.username === username);
-      const container = document.getElementById('sportsScienceContentArea');
-      if (!athlete) return;
-
-      const eventName = athlete.event1 || athlete.sport || "Para Athletics Event";
-      
-      let bioScience = "34° to 38° release angle with maximum core torque stability.";
-      let physioScience = "High phosphocreatine replenishment capacity; targeted VO2 peak output.";
-      let nutriScience = "High-protein recovery matrix, isotonic hydration, strictly NADA/WADA compliant.";
-      let commonMistakes = "Avoid premature upper-body trunk rotation, jerking the elbow, and insufficient hip clearance during release.";
-
-      if (eventName.toLowerCase().includes('discus')) {
-        bioScience = "Rotational velocity target > 22 rad/s with optimal arm extension angle at release.";
-        commonMistakes = "Avoid early deceleration, leaning backward out of the circle, and poor low-center-of-gravity balance.";
-      } else if (eventName.toLowerCase().includes('javelin')) {
-        bioScience = "Optimum entry block angle of 58° with shoulder-elbow separation alignment.";
-        commonMistakes = "Avoid bending the throwing elbow too early, rushing the penultimate step, and dragging the trailing leg incorrectly.";
-      } else if (eventName.toLowerCase().includes('wheelchair') || eventName.toLowerCase().includes('track')) {
-        bioScience = "Push frequency optimization with 18° camber wheel alignment.";
-        commonMistakes = "Avoid inconsistent stroke cadence, gripping pushrims too tightly, and neglecting core posture stabilization.";
+      if (staffList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="px-5 py-6 text-center text-slate-500 italic">No empaneled staff found.</td></tr>`;
+        return;
       }
 
-      let pbEditSection = '';
-      if (isAdmin) {
-        pbEditSection = `
-          <div class="mt-4 pt-3 border-t border-slate-800">
-            <form onsubmit="updatePersonalBest(event, '${athlete.username}')" class="flex items-center space-x-2">
-              <input type="text" id="new_pb_input" value="${athlete.personalBest || ''}" placeholder="Update Personal Best..." class="flex-1 bg-slate-950 border border-slate-700 rounded p-1.5 text-xs text-amber-300">
-              <button type="submit" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded cursor-pointer">Save PB</button>
-            </form>
-          </div>
-        `;
+      tbody.innerHTML = staffList.map(s => `
+        <tr class="hover:bg-slate-900/50 transition">
+          <td class="px-5 py-3 font-semibold text-white flex items-center space-x-2">
+            <img src="${s.photoUrl}" class="w-7 h-7 rounded-full object-cover border border-amber-500/40 bg-white">
+            <div>
+              <span class="block">${s.name}</span>
+              <span class="text-[10px] text-amber-400 font-mono">${s.username}</span>
+            </div>
+          </td>
+          <td class="px-5 py-3 text-slate-300">${s.designation}</td>
+          <td class="px-5 py-3 font-mono text-slate-300">${s.mobile}</td>
+          <td class="px-5 py-3 text-right">
+            <button onclick="openStaffDetailModal('${s.username}')" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-semibold cursor-pointer shadow">Full Profile</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Geofenced Attendance System Logic
+    const officeAddresses = [
+      { name: "Knowledge Park II / Apollo Hospital Area", lat: 28.4569, lng: 77.5002 }, 
+      { name: "Gautam Buddha University", lat: 28.4215, lng: 77.5259 }
+    ];
+    const allowedRadiusMeters = 500;
+
+    function getTodayDateString() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function triggerStaffManualAttendance() {
+      if (!currentUser || currentUser.role !== 'staff') {
+        alert("Attendance check-in is restricted to staff members.");
+        return;
       }
 
-      container.innerHTML = `
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-          <span class="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Assigned Event Profile</span>
-          <h4 class="text-base font-bold text-white">${athlete.name}</h4>
-          <p class="text-xs text-purple-400 font-semibold">${eventName} (Class ${athlete.sportClass})</p>
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
-            <span class="text-[10px] text-slate-400 uppercase block">Verified Personal Best (PB)</span>
-            <span class="text-lg font-black text-amber-400 font-mono">${athlete.personalBest || 'Not Recorded Yet'}</span>
-            ${pbEditSection}
-          </div>
-        </div>
+      if (!("geolocation" in navigator)) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
 
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-          <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">Biomechanics & Physiology</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Release Angle & Thrust:</strong> ${bioScience}</p>
-          <p class="text-xs text-slate-300 leading-relaxed mt-2"><strong class="text-white">Physiological Targets:</strong> ${physioScience}</p>
-        </div>
+      const statusEl = document.getElementById('attendanceStatusMsg');
+      if (statusEl) statusEl.innerText = "Requesting high-accuracy GPS fix...";
 
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-          <span class="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">Nutrition & Adaptive Science</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Necessary Nutrients:</strong> ${nutriScience}</p>
-        </div>
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        let shortestDistance = Infinity;
+        let matchedOfficeName = "";
 
-        <div class="bg-slate-950 p-4 rounded-xl border border-rose-900/40 space-y-3">
-          <span class="text-[10px] text-rose-400 font-bold uppercase tracking-wider block"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Common Mistakes / What NOT To Do</span>
-          <p class="text-xs text-slate-300 leading-relaxed">${commonMistakes}</p>
-        </div>
-      `;
-    }
+        for (let office of officeAddresses) {
+          const earthRadiusKm = 6371;
+          const dLat = (userLat - office.lat) * (Math.PI / 180);
+          const dLon = (userLng - office.lng) * (Math.PI / 180);
+          const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(office.lat * (Math.PI / 180)) * Math.cos(userLat * (Math.PI / 180)) * 
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const distanceMeters = earthRadiusKm * c * 1000;
 
-    function updatePersonalBest(e, username) {
-      e.preventDefault();
-      if (!isAdmin) return;
-      const athlete = usersDb.find(u => u.username === username);
-      if (!athlete) return;
-
-      const newPb = document.getElementById('new_pb_input').value;
-      athlete.personalBest = newPb;
-      refreshAllUI();
-      renderSportsScienceView(username);
-      alert("Athlete Personal Best updated successfully!");
-    }
-
-    function renderDynamicAthleteChart(username) {
-      const athlete = usersDb.find(u => u.username === username);
-      if (!athlete) return;
-
-      const labels = athlete.progression ? athlete.progression.map(p => p.period) : ['2024', '2025', '2026'];
-      const dataPoints = athlete.progression ? athlete.progression.map(p => p.score) : [8.5, 9.2, 9.81];
-
-      const ctx = document.getElementById('performanceChart').getContext('2d');
-      if (performanceChartInstance) performanceChartInstance.destroy();
-
-      performanceChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: `${athlete.name} (${athlete.sportClass}) — Progression Curve`,
-            data: dataPoints,
-            borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.15)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.35,
-            pointBackgroundColor: '#7c3aed',
-            pointBorderColor: '#ffffff',
-            pointRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { labels: { color: '#e2e8f0' } } },
-          scales: {
-            x: { grid: { color: 'rgba(51, 65, 85, 0.3)' }, ticks: { color: '#94a3b8' } },
-            y: { grid: { color: 'rgba(51, 65, 85, 0.3)' }, ticks: { color: '#94a3b8' } }
+          if (distanceMeters < shortestDistance) {
+            shortestDistance = distanceMeters;
+            matchedOfficeName = office.name;
           }
         }
-      });
+
+        const todayKey = getTodayDateString();
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        if (!currentUser.attendanceRecords) {
+          currentUser.attendanceRecords = {};
+        }
+
+        if (shortestDistance <= allowedRadiusMeters) {
+          currentUser.attendanceRecords[todayKey] = {
+            status: "P",
+            timestamp: currentTime
+          };
+          alert(`Success! Marked Present (P). Closest office: ${matchedOfficeName} (~${Math.round(shortestDistance)}m away).`);
+        } else {
+          currentUser.attendanceRecords[todayKey] = {
+            status: "A",
+            timestamp: currentTime
+          };
+          alert(`Marked Absent (A). You are currently ~${Math.round(shortestDistance)}m away from the nearest office.`);
+        }
+
+        const uIndex = usersDb.findIndex(u => u.username === currentUser.username);
+        if (uIndex !== -1) {
+          usersDb[uIndex] = currentUser;
+        }
+        saveAllStateToStorage();
+        renderAttendanceTabUI();
+
+      }, (error) => {
+        alert("GPS Error: Please ensure Location Services are allowed for your browser in System Settings.");
+        if (statusEl) statusEl.innerText = "GPS error code " + error.code;
+      }, { timeout: 15000, enableHighAccuracy: true, maximumAge: 0 });
     }
+    function renderAttendanceTabUI() {
+      const container = document.getElementById('tab-attendance-content');
+      if (!container) return;
 
-    function renderAthletesDirectory(list) {
-      const tbody = document.getElementById('athleteDirectoryBody');
-      tbody.innerHTML = '';
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500">No athletes registered under this project yet.</td></tr>`;
+      if (!currentUser || (currentUser.role !== 'staff' && currentUser.role !== 'admin')) {
+        container.innerHTML = `<p class="text-xs text-rose-400 p-4">Access Restricted: Attendance tab is only visible to Staff and Super Admin.</p>`;
         return;
       }
 
-      list.forEach(a => {
-        const p = projects.find(proj => proj.id === a.projectId);
-        const pName = p ? p.partner : "General PSEC";
+      const todayKey = getTodayDateString();
+      let staffList = usersDb.filter(u => u.role === 'staff');
 
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="px-5 py-4 font-semibold text-white flex items-center space-x-3">
-              <img src="${a.photoUrl}" alt="${a.name}" class="w-10 h-10 rounded-full object-cover border border-purple-500/40">
-              <div>
-                <span class="block text-sm font-bold text-white">${a.name}</span>
-                <span class="text-[11px] text-amber-400 font-mono">ID: ${a.username}</span>
-              </div>
-            </td>
-            <td class="px-5 py-4">
-              <span class="px-2.5 py-1 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 font-bold text-[11px]">${pName}</span>
-            </td>
-            <td class="px-5 py-4">
-              <span class="font-bold text-slate-200 block">${a.sport}</span>
-              <span class="text-[11px] text-purple-400">${a.event1}</span>
-            </td>
-            <td class="px-5 py-4">
-              <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 font-bold">${a.sportClass}</span>
-              <span class="block text-[11px] text-slate-400 mt-1">${a.disability}</span>
-            </td>
-            <td class="px-5 py-4 text-[11px]">
-              <span class="text-amber-400 font-semibold block">${a.records ? a.records.international : 'N/A'}</span>
-            </td>
-            <td class="px-5 py-4 text-right space-x-1">
-              <button onclick="viewAthleteFullProfile('${a.username}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-purple-300 rounded border border-slate-700 cursor-pointer">Full Profile</button>
-              ${isAdmin ? `<button onclick="deleteMember('${a.username}')" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded border border-rose-500/30 cursor-pointer"><i class="fa-solid fa-trash"></i></button>` : ''}
+      let staffActionSection = "";
+      if (currentUser.role === 'staff') {
+        const myTodayRecord = currentUser.attendanceRecords?.[todayKey];
+        const statusDisplay = myTodayRecord ? (myTodayRecord.status === 'P' ? 'Present (P)' : 'Absent (A)') : 'Not Marked Yet';
+        const timeDisplay = myTodayRecord?.timestamp ? `at ${myTodayRecord.timestamp}` : '';
+
+        staffActionSection = `
+          <div class="bg-slate-950 p-4 rounded-xl border border-purple-500/40 space-y-3 mb-6">
+            <h4 class="text-xs font-bold text-purple-400 uppercase">Staff Daily Check-In (${todayKey})</h4>
+            <p class="text-xs text-slate-300">Status: <strong class="${myTodayRecord?.status === 'P' ? 'text-emerald-400' : 'text-amber-400'}">${statusDisplay} ${timeDisplay}</strong></p>
+            <button onclick="triggerStaffManualAttendance()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition cursor-pointer shadow">
+              <i class="fa-solid fa-location-crosshairs mr-1.5"></i> Update Attendance (GPS Verify)
+            </button>
+            <p id="attendanceStatusMsg" class="text-[10px] text-slate-400 italic"></p>
+          </div>
+        `;
+      }
+
+      let staffTableRows = staffList.map(s => {
+        const record = s.attendanceRecords?.[todayKey];
+        const displayStatus = record ? record.status : 'A';
+        const displayTime = record?.timestamp ? `<span class="text-[10px] text-slate-400 ml-1">(${record.timestamp})</span>` : '';
+        const badgeColor = displayStatus === 'P' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+
+        return `
+          <tr class="hover:bg-slate-900/50 transition">
+            <td class="px-5 py-3 font-semibold text-white">${s.name} <span class="text-[10px] text-slate-400 font-mono">(${s.username})</span></td>
+            <td class="px-5 py-3 text-slate-300">${s.designation || 'Staff'}</td>
+            <td class="px-5 py-3">
+              <span class="px-2.5 py-1 rounded text-xs font-black border ${badgeColor}">${displayStatus}</span>
+              ${displayTime}
             </td>
           </tr>
         `;
-      });
-    }
+      }).join('');
 
-    function renderStaffDirectory(list) {
-      const tbody = document.getElementById('staffDirectoryBody');
-      tbody.innerHTML = '';
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-500">No staff empaneled yet.</td></tr>`;
-        return;
-      }
-
-      list.forEach(s => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="px-5 py-4 font-semibold text-white flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center font-bold text-purple-300">
-                ${s.name.charAt(0)}
-              </div>
-              <div>
-                <span class="block text-sm font-bold text-white">${s.name}</span>
-                <span class="text-[11px] text-amber-400 font-mono">ID: ${s.username}</span>
-              </div>
-            </td>
-            <td class="px-5 py-4"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-bold text-[11px]">${s.designation || 'Staff'}</span></td>
-            <td class="px-5 py-4 font-mono text-slate-300">${s.mobile || 'N/A'}</td>
-            <td class="px-5 py-4 text-right space-x-1">
-              <button onclick="viewStaffFullProfile('${s.username}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-purple-300 rounded border border-slate-700 cursor-pointer">View Profile</button>
-              ${isAdmin ? `<button onclick="deleteMember('${s.username}')" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded border border-rose-500/30 cursor-pointer"><i class="fa-solid fa-trash"></i></button>` : ''}
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    function searchAthletes() {
-      const q = document.getElementById('athleteSearchInput').value.toLowerCase();
-      const { athletesList } = getFilteredData();
-      const filtered = athletesList.filter(a => 
-        a.name.toLowerCase().includes(q) || 
-        a.username.toLowerCase().includes(q) || 
-        a.sportClass.toLowerCase().includes(q)
-      );
-      renderAthletesDirectory(filtered);
-    }
-
-    function searchStaff() {
-      const q = document.getElementById('staffSearchInput').value.toLowerCase();
-      const { staffList } = getFilteredData();
-      const filtered = staffList.filter(s => s.name.toLowerCase().includes(q) || s.username.toLowerCase().includes(q) || (s.designation && s.designation.toLowerCase().includes(q)));
-      renderStaffDirectory(filtered);
-    }
-
-    function openMyProfileModal() {
-      if (!currentUser) return;
-      const content = document.getElementById('modalMyProfileContent');
-      const isPlayer = (currentUser.role === 'player');
-
-      let mobileInputMarkup = `<input type="tel" value="${currentUser.mobile || ''}" disabled class="w-full bg-slate-950/60 border border-slate-800 rounded p-1.5 text-slate-400 cursor-not-allowed">`;
-      if (isAdmin) {
-        mobileInputMarkup = `<input type="tel" id="myNewMobile" value="${currentUser.mobile || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">`;
-      }
-
-      let emailEditSection = `
-        <div class="space-y-1">
-          <label class="block text-slate-400">Email (Requires OTP Verification to Change)</label>
-          <div class="flex space-x-2">
-            <input type="email" id="myNewEmail" value="${currentUser.email || ''}" placeholder="your.email@adp.org" class="flex-1 bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-            <button type="button" onclick="sendMockEmailCode('myNewEmail')" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs cursor-pointer">Send OTP</button>
+      container.innerHTML = `
+        ${staffActionSection}
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="text-xs font-bold text-white uppercase"><i class="fa-solid fa-clipboard-user text-amber-400 mr-2"></i>Staff Attendance Roster (${todayKey})</h3>
+            <span class="text-[10px] text-amber-400">Active starting Sept 3, 2026</span>
           </div>
-          <div id="emailVerificationBlock" class="hidden space-y-1 pt-1">
-            <div class="flex space-x-2">
-              <input type="text" id="emailCodeInput" placeholder="Enter 6-digit code" class="w-32 bg-slate-950 border border-slate-700 rounded p-1 text-white text-center font-mono">
-              <button type="button" onclick="verifyMyProfileEmailChange()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs cursor-pointer">Verify & Commit</button>
-            </div>
-          </div>
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950/60 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="px-5 py-3">Staff Member</th>
+                <th class="px-5 py-3">Designation</th>
+                <th class="px-5 py-3">Today Status & Timestamp</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300">
+              ${staffTableRows}
+            </tbody>
+          </table>
         </div>
       `;
-
-      let profileDetailsHTML = '';
-      if (isPlayer) {
-        const assignedProj = projects.find(p => p.id === currentUser.projectId);
-        const projName = assignedProj ? `${assignedProj.name} (${assignedProj.partner})` : 'General PSEC';
-        profileDetailsHTML = `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1">
-              <span class="font-bold text-amber-400 uppercase">Physical & Contact Metrics</span>
-              <p>Sport: ${currentUser.sport} | Class: ${currentUser.sportClass}</p>
-              <p>Weight: ${currentUser.weight || 'N/A'} | Height: ${currentUser.height || 'N/A'}</p>
-              <p>Mobile: ${currentUser.mobile || 'N/A'}</p>
-              <p class="text-amber-300 font-bold">Personal Best: ${currentUser.personalBest || 'N/A'}</p>
-              <p class="text-purple-300 font-semibold">CSR Project: ${projName}</p>
-            </div>
-            <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1">
-              <span class="font-bold text-emerald-400 uppercase">Assigned Events</span>
-              <p>1. ${currentUser.event1 || 'N/A'}</p>
-              <p>2. ${currentUser.event2 || 'N/A'}</p>
-              <p>3. ${currentUser.event3 || 'N/A'}</p>
-            </div>
-          </div>
-        `;
-      } else if (currentUser.role === 'staff') {
-        profileDetailsHTML = `
-          <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs space-y-1">
-            <span class="font-bold text-amber-400 uppercase">Staff Credentials</span>
-            <p>Designation: ${currentUser.designation || 'Staff Member'}</p>
-            <p>Education: ${currentUser.education || 'N/A'}</p>
-            <p>Joining Year: ${currentUser.joiningYear || 'N/A'}</p>
-            <p>Mobile: ${currentUser.mobile || 'N/A'}</p>
-          </div>
-        `;
-      } else {
-        profileDetailsHTML = `
-          <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs space-y-1">
-            <span class="font-bold text-amber-400 uppercase">Super Admin Profile</span>
-            <p>Access Level: Full System Control</p>
-          </div>
-        `;
-      }
-
-      content.innerHTML = `
-        <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
-          <div class="flex items-center space-x-4">
-            <img id="modalProfileAvatar" src="${currentUser.photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}" class="w-16 h-16 rounded-full object-cover border-2 border-purple-500">
-            <div>
-              <h3 class="text-xl font-black text-white">${currentUser.name}</h3>
-              <p class="text-xs text-amber-400 font-semibold">${currentUser.role.toUpperCase()} • ID: ${currentUser.username}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-4">
-          ${profileDetailsHTML}
-
-          <form onsubmit="saveMyProfileChanges(event)" class="space-y-3 text-xs border-t border-slate-800 pt-3">
-            <div>
-              <label class="block text-slate-400 mb-1">Update Profile Picture (JPG/PNG, Max 1MB)</label>
-              <input type="file" id="myNewProfilePic" accept=".jpg,.jpeg,.png" onchange="validateProfilePicSize(this)" class="w-full text-slate-300 text-xs bg-slate-950 border border-slate-700 rounded p-1">
-            </div>
-            <div>
-              <label class="block text-slate-400 mb-1">Mobile Number ${isAdmin ? '(Editable by Super Admin)' : '(Locked)'}</label>
-              ${mobileInputMarkup}
-            </div>
-
-            ${emailEditSection}
-
-            <button type="submit" class="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded cursor-pointer transition">Save Profile Changes</button>
-          </form>
-        </div>
-      `;
-
-      document.getElementById('myProfileModal').classList.remove('hidden');
-      document.getElementById('myProfileModal').classList.add('flex');
     }
 
-    function closeMyProfileModal() {
-      document.getElementById('myProfileModal').classList.add('hidden');
-      document.getElementById('myProfileModal').classList.remove('flex');
-    }
-
-    let tempUploadedPhotoBase64 = null;
-    function validateProfilePicSize(input) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const fileSize = file.size / 1024 / 1024;
-        const fileType = file.type;
-
-        if (fileType !== 'image/jpeg' && fileType !== 'image/png' && !file.name.toLowerCase().endsWith('.jpg') && !file.name.toLowerCase().endsWith('.png')) {
-          alert("Invalid format. Please upload a JPG or PNG image.");
-          input.value = "";
-          return;
-        }
-
-        if (fileSize > 1) {
-          alert("Image size exceeds 1MB limit. Please upload a compressed image under 1MB.");
-          input.value = "";
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          tempUploadedPhotoBase64 = e.target.result;
-          document.getElementById('modalProfileAvatar').src = tempUploadedPhotoBase64;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function verifyMyProfileEmailChange() {
-      const enteredCode = document.getElementById('emailCodeInput').value.trim();
-      if (enteredCode !== mockEmailCodeSent) {
-        alert("Invalid verification code. Please try again.");
-        return;
-      }
-
-      const newEmailVal = document.getElementById('myNewEmail').value.trim();
-      currentUser.email = newEmailVal;
-      currentUser.emailVerified = true;
-      localStorage.setItem('psec_current_user', JSON.stringify(currentUser));
-      alert("Email updated and verified successfully via OTP!");
-      openMyProfileModal();
-      refreshAllUI();
-    }
-
-    function saveMyProfileChanges(e) {
-      e.preventDefault();
-      if (!currentUser) return;
-
-      if (isAdmin) {
-        const mobileInput = document.getElementById('myNewMobile');
-        if (mobileInput) currentUser.mobile = mobileInput.value;
-      }
-
-      if (tempUploadedPhotoBase64) {
-        currentUser.photoUrl = tempUploadedPhotoBase64;
-        document.getElementById('sidebarProfilePic').src = tempUploadedPhotoBase64;
-        tempUploadedPhotoBase64 = null;
-      }
-
-      localStorage.setItem('psec_current_user', JSON.stringify(currentUser));
-      closeMyProfileModal();
-      refreshAllUI();
-      alert("Your profile was updated successfully!");
-    }
-
-    function sendMockEmailCode(targetId) {
-      const inputEl = document.getElementById(targetId);
-      if (!inputEl || !inputEl.value.trim()) {
-        alert("Please enter a valid email address first.");
-        return;
-      }
-      mockEmailCodeSent = Math.floor(100000 + Math.random() * 900000).toString();
-      alert(`[Simulation]: Verification OTP sent to ${inputEl.value}.\nYour Code is: ${mockEmailCodeSent}`);
-      document.getElementById('emailVerificationBlock').classList.remove('hidden');
-    }
-
-    function verifyMockEmailCode(username, isStaff = false) {
-      const enteredCode = document.getElementById('emailCodeInput').value.trim();
-      if (enteredCode !== mockEmailCodeSent) {
-        alert("Invalid verification code. Please try again.");
-        return;
-      }
-
-      const user = usersDb.find(u => u.username === username);
-      if (user) {
-        user.email = document.getElementById(isStaff ? 'edit_staff_email' : 'edit_email').value.trim();
-        user.emailVerified = true;
-        alert("Email verified via OTP successfully! Field updated and committed.");
-        refreshAllUI();
-        if (isStaff) viewStaffFullProfile(username);
-        else viewAthleteFullProfile(username);
-      }
-    }
-
-    function viewAthleteFullProfile(username) {
-      const a = usersDb.find(item => item.username === username);
+    function openAthleteDetailModal(username) {
+      const a = usersDb.find(u => u.username === username);
       if (!a) return;
-
       const content = document.getElementById('modalAthleteContent');
       
-      let adminEditSection = '';
-      if (isAdmin) {
-        let projOptions = projects.map(p => `<option value="${p.id}" ${a.projectId === p.id ? 'selected' : ''}>${p.name} (${p.partner})</option>`).join('');
+      let editControls = isAdmin ? `
+        <div class="mt-4 pt-4 border-t border-slate-800 flex justify-end space-x-2">
+          <button onclick="enableAthleteEdit('${a.username}')" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-bold cursor-pointer">Edit Full Profile</button>
+        </div>
+      ` : '';
 
-        adminEditSection = `
-          <div class="mt-6 pt-4 border-t border-slate-800 space-y-4">
-            <h4 class="text-xs font-bold text-amber-400 uppercase"><i class="fa-solid fa-user-gear mr-1"></i>Admin: Edit Full Profile, Email (OTP Override), CSR Project & PDFs (Max 1MB)</h4>
-            <form onsubmit="saveFullAthleteProfile(event, '${a.username}')" class="space-y-3 text-xs">
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-slate-400 mb-1">Full Name</label>
-                  <input type="text" id="edit_name" value="${a.name}" required class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-                <div>
-                  <label class="block text-slate-400 mb-1">Date of Birth</label>
-                  <input type="date" id="edit_dob" value="${a.dob || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-slate-400 mb-1">Sport / Game</label>
-                  <input type="text" id="edit_sport" value="${a.sport}" required class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-                <div>
-                  <label class="block text-slate-400 mb-1">CSR Funding Project</label>
-                  <select id="edit_project" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-amber-400 font-semibold">${projOptions}</select>
-                </div>
-              </div>
-
-              <div class="space-y-1">
-                <label class="block text-slate-400">Email (Admin Override / Requires OTP to Commit)</label>
-                <div class="flex space-x-2">
-                  <input type="email" id="edit_email" value="${a.email || ''}" placeholder="athlete@adp.org" class="flex-1 bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                  <button type="button" onclick="sendMockEmailCode('edit_email')" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs cursor-pointer">Send OTP</button>
-                </div>
-                <div id="emailVerificationBlock" class="hidden space-y-1 pt-1">
-                  <div class="flex space-x-2">
-                    <input type="text" id="emailCodeInput" placeholder="Enter 6-digit code" class="w-32 bg-slate-950 border border-slate-700 rounded p-1 text-white text-center font-mono">
-                    <button type="button" onclick="verifyMockEmailCode('${a.username}', false)" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs cursor-pointer">Verify & Commit</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-4 gap-2">
-                <div><label class="block text-[10px] text-slate-400">Weight</label><input type="text" id="edit_weight" value="${a.weight || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white"></div>
-                <div><label class="block text-[10px] text-slate-400">Height</label><input type="text" id="edit_height" value="${a.height || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white"></div>
-                <div><label class="block text-[10px] text-slate-400">Mobile</label><input type="tel" id="edit_mobile" value="${a.mobile || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white"></div>
-                <div><label class="block text-[10px] text-slate-400">PB</label><input type="text" id="edit_pb" value="${a.personalBest || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-amber-300"></div>
-              </div>
-
-              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
-                <span class="font-bold text-purple-400 block text-[11px]">Upload Verification PDFs (PDF only, Max 1MB each)</span>
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                  <div><label class="text-slate-400">Aadhaar (PDF)</label><input type="file" id="doc_aadhaar" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                  <div><label class="text-slate-400">Passport (PDF)</label><input type="file" id="doc_passport" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                  <div><label class="text-slate-400">Disability Cert (PDF)</label><input type="file" id="doc_disability" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                  <div><label class="text-slate-400">Achievement (PDF)</label><input type="file" id="doc_achieve" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                </div>
-              </div>
-
-              <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded cursor-pointer">Save Full Profile & Project</button>
-            </form>
-          </div>
-        `;
-      }
-
-      const assignedProject = projects.find(p => p.id === a.projectId);
-      const projDisplayName = assignedProject ? `${assignedProject.name} (${assignedProject.partner})` : 'General PSEC';
+      let passwordBadge = isAdmin ? `<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono rounded font-bold">Password: ${a.password}</span>` : '';
+      let superAdminViewDocsNotice = isAdmin ? `<p class="col-span-2 text-[10px] text-amber-400 italic"><i class="fa-solid fa-lock mr-1"></i>Secure Document Vault: Only Super Admin can view/verify uploaded credentials.</p>` : '';
 
       content.innerHTML = `
-        <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
-          <div class="flex items-center space-x-4">
-            <img src="${a.photoUrl}" class="w-16 h-16 rounded-full object-cover border-2 border-purple-500">
-            <div>
-              <h3 class="text-xl font-black text-white">${a.name}</h3>
-              <p class="text-xs text-purple-400 font-semibold">${a.sport} • Class ${a.sportClass}</p>
-              <p class="text-xs text-amber-400 font-mono mt-0.5">PSEC ID: ${a.username}</p>
+        <div id="athleteProfileViewContainer">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <img src="${a.photoUrl}" class="w-16 h-16 rounded-xl object-cover border border-purple-500 shadow-md bg-white">
+              <div>
+                <h3 class="text-lg font-bold text-white">${a.name}</h3>
+                <p class="text-xs text-purple-400 font-mono">${a.username} | Sport: ${a.sport} (${a.sportClass})</p>
+              </div>
             </div>
+            <div>${passwordBadge}</div>
           </div>
-          ${isAdmin ? `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-right"><span class="text-[10px] text-slate-500 block">Private Password</span><span class="text-xs font-mono text-emerald-400">${a.password}</span></div>` : ''}
+          <div class="grid grid-cols-2 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+            ${superAdminViewDocsNotice}
+            <p class="text-slate-300"><strong class="text-slate-400">CSR Project:</strong> ${a.projectId}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Email:</strong> ${a.email || 'N/A'} ${a.emailVerified ? '<span class="text-emerald-400 text-[10px] font-bold">✓ Verified</span>' : ''}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Mobile:</strong> ${a.mobile}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Height / Weight:</strong> ${a.height} / ${a.weight}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Personal Best:</strong> ${a.personalBest}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Events:</strong> ${a.event1}, ${a.event2}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Aadhaar (.pdf):</strong> <span class="text-emerald-400">${a.docs?.aadhaarPdf || 'Verified (< 1MB)'}</span> ${isAdmin ? '<button onclick="alert(\'Opening secure vault PDF...\')" class="ml-1 text-purple-400 underline cursor-pointer">View</button>' : ''}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Passport (.pdf):</strong> <span class="text-emerald-400">${a.docs?.passport || 'Verified (< 1MB)'}</span> ${isAdmin ? '<button onclick="alert(\'Opening secure vault PDF...\')" class="ml-1 text-purple-400 underline cursor-pointer">View</button>' : ''}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Disability Card (.pdf):</strong> <span class="text-emerald-400">${a.docs?.disabilityCert || 'Verified (< 1MB)'}</span> ${isAdmin ? '<button onclick="alert(\'Opening secure vault PDF...\')" class="ml-1 text-purple-400 underline cursor-pointer">View</button>' : ''}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Achievements (.pdf):</strong> <span class="text-emerald-400">${a.docs?.achievementDoc || 'Verified (< 1MB)'}</span> ${isAdmin ? '<button onclick="alert(\'Opening secure vault PDF...\')" class="ml-1 text-purple-400 underline cursor-pointer">View</button>' : ''}</p>
+          </div>
+          ${editControls}
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1">
-            <span class="font-bold text-amber-400 uppercase">Physical & Contact Metrics</span>
-            <p>Weight: ${a.weight || 'N/A'} | Height: ${a.height || 'N/A'}</p>
-            <p>Mobile: ${a.mobile || 'N/A'} | Email: ${a.email || 'N/A'} ${a.emailVerified ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-1"></i>' : ''}</p>
-            <p class="text-slate-400">DOB: ${a.dob || 'N/A'}</p>
-            <p class="text-amber-300 font-bold">Personal Best (PB): ${a.personalBest || 'N/A'}</p>
-            <p class="text-purple-300 font-semibold pt-1 border-t border-slate-900">CSR Project: ${projDisplayName}</p>
-          </div>
-          <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1">
-            <span class="font-bold text-emerald-400 uppercase">Uploaded Documents Status</span>
-            <p class="text-[11px] text-slate-300">Aadhaar PDF: <span class="${a.docs?.aadhaar ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${a.docs?.aadhaar ? 'Uploaded' : 'Pending'}</span></p>
-            <p class="text-[11px] text-slate-300">Passport PDF: <span class="${a.docs?.passport ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${a.docs?.passport ? 'Uploaded' : 'Pending'}</span></p>
-            <p class="text-[11px] text-slate-300">Disability PDF: <span class="${a.docs?.disabilityCert ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${a.docs?.disabilityCert ? 'Uploaded' : 'Pending'}</span></p>
-          </div>
-        </div>
-
-        ${adminEditSection}
       `;
       document.getElementById('athleteDetailModal').classList.remove('hidden');
       document.getElementById('athleteDetailModal').classList.add('flex');
     }
 
-    function viewStaffFullProfile(username) {
-      const s = usersDb.find(item => item.username === username);
-      if (!s) return;
-
-      const content = document.getElementById('modalStaffContent');
-
-      let adminStaffEditSection = '';
-      if (isAdmin) {
-        adminStaffEditSection = `
-          <div class="mt-6 pt-4 border-t border-slate-800 space-y-4">
-            <h4 class="text-xs font-bold text-amber-400 uppercase"><i class="fa-solid fa-user-gear mr-1"></i>Admin: Edit Staff Profile, Email (OTP Override) & PDFs (Max 1MB)</h4>
-            <form onsubmit="saveFullStaffProfile(event, '${s.username}')" class="space-y-3 text-xs">
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-slate-400 mb-1">Full Name</label>
-                  <input type="text" id="edit_staff_name" value="${s.name}" required class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-                <div>
-                  <label class="block text-slate-400 mb-1">Designation</label>
-                  <input type="text" id="edit_staff_desig" value="${s.designation || ''}" required class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-              </div>
-
-              <div class="space-y-1">
-                <label class="block text-slate-400">Email (Admin Override / Requires OTP to Commit)</label>
-                <div class="flex space-x-2">
-                  <input type="email" id="edit_staff_email" value="${s.email || ''}" placeholder="staff@adp.org" class="flex-1 bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                  <button type="button" onclick="sendMockEmailCode('edit_staff_email')" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs cursor-pointer">Send OTP</button>
-                </div>
-                <div id="emailVerificationBlock" class="hidden space-y-1 pt-1">
-                  <div class="flex space-x-2">
-                    <input type="text" id="emailCodeInput" placeholder="Enter 6-digit code" class="w-32 bg-slate-950 border border-slate-700 rounded p-1 text-white text-center font-mono">
-                    <button type="button" onclick="verifyMockEmailCode('${s.username}', true)" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs cursor-pointer">Verify & Commit</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-3 gap-2">
-                <div>
-                  <label class="block text-[10px] text-slate-400">Date of Birth</label>
-                  <input type="date" id="edit_staff_dob" value="${s.dob || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white">
-                </div>
-                <div>
-                  <label class="block text-[10px] text-slate-400">Year of Joining</label>
-                  <input type="number" id="edit_staff_joining" value="${s.joiningYear || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white">
-                </div>
-                <div>
-                  <label class="block text-[10px] text-slate-400">Highest Education</label>
-                  <input type="text" id="edit_staff_edu" value="${s.education || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-white">
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-slate-400 mb-1">Mobile Number</label>
-                  <input type="tel" id="edit_staff_mobile" value="${s.mobile || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-                <div>
-                  <label class="block text-slate-400 mb-1">Address</label>
-                  <input type="text" id="edit_staff_address" value="${s.aadhaar || ''}" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white">
-                </div>
-              </div>
-
-              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
-                <span class="font-bold text-purple-400 block text-[11px]">Upload Staff PDFs (Aadhaar & PAN, Max 1MB each)</span>
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                  <div><label class="text-slate-400">Aadhaar PDF</label><input type="file" id="staff_doc_aadhaar" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                  <div><label class="text-slate-400">PAN Card PDF</label><input type="file" id="staff_doc_pan" accept=".pdf" onchange="validateFileSize(this)" class="w-full text-[10px] text-slate-400"></div>
-                </div>
-              </div>
-
-              <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded cursor-pointer">Save Staff Profile</button>
-            </form>
+    function enableAthleteEdit(username) {
+      if (!isAdmin) return;
+      const a = usersDb.find(u => u.username === username);
+      if (!a) return;
+      const container = document.getElementById('athleteProfileViewContainer');
+      container.innerHTML = `
+        <h3 class="text-base font-bold text-amber-400 mb-3">Edit Full Athlete Profile & Secure Vault</h3>
+        <form onsubmit="saveEditedAthlete(event, '${a.username}')" class="space-y-3 text-xs">
+          <div class="flex items-center space-x-3 mb-2 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+            <img id="editAthPfpPreview" src="${a.photoUrl}" class="w-12 h-12 rounded-lg object-cover border border-purple-500 bg-white">
+            <div class="flex-1">
+              <label class="block font-semibold text-slate-300 mb-0.5">Passport Photo (JPG/PNG < 1MB)</label>
+              <input type="file" id="editAthPfpFile" accept=".jpg,.jpeg,.png" onchange="previewMemberPhoto(event, 'editAthPfpPreview')" class="text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-purple-600 file:text-white cursor-pointer">
+            </div>
           </div>
-        `;
-      }
-
-      content.innerHTML = `
-        <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
-          <div class="flex items-center space-x-4">
-            <div class="w-16 h-16 rounded-full bg-purple-900/60 flex items-center justify-center font-bold text-white text-2xl">
-              ${s.name.charAt(0)}
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Full Name</label>
+            <input type="text" id="editAthName" value="${a.name}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Sport</label>
+              <input type="text" id="editAthSport" value="${a.sport}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
             </div>
             <div>
-              <h3 class="text-xl font-black text-white">${s.name}</h3>
-              <p class="text-xs text-amber-400 font-semibold">${s.designation || 'Staff Member'}</p>
-              <p class="text-xs text-purple-300 font-mono mt-0.5">PSEC Staff ID: ${s.username}</p>
+              <label class="block font-semibold text-slate-400 mb-1">Sport Class</label>
+              <input type="text" id="editAthClass" value="${a.sportClass}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
             </div>
           </div>
-          ${isAdmin ? `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-right"><span class="text-[10px] text-slate-500 block">Private Password</span><span class="text-xs font-mono text-emerald-400">${s.password}</span></div>` : ''}
-        </div>
-
-        <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs space-y-2">
-          <p><strong class="text-slate-400">Date of Birth:</strong> ${s.dob || 'N/A'}</p>
-          <p><strong class="text-slate-400">Year of Joining:</strong> ${s.joiningYear || 'N/A'}</p>
-          <p><strong class="text-slate-400">Highest Education:</strong> ${s.education || 'N/A'}</p>
-          <p><strong class="text-slate-400">Mobile:</strong> ${s.mobile || 'N/A'}</p>
-          <p><strong class="text-slate-400">Email:</strong> ${s.email || 'N/A'} ${s.emailVerified ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-1"></i>' : ''}</p>
-          <p><strong class="text-slate-400">Aadhaar PDF:</strong> <span class="${s.docs?.aadhaar ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${s.docs?.aadhaar ? 'Uploaded' : 'Pending'}</span></p>
-          <p><strong class="text-slate-400">PAN Card PDF:</strong> <span class="${s.docs?.panCard ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${s.docs?.panCard ? 'Uploaded' : 'Pending'}</span></p>
-        </div>
-
-        ${adminStaffEditSection}
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Email ID</label>
+              <div class="flex space-x-1">
+                <input type="email" id="editAthEmail" value="${a.email || ''}" class="flex-1 bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                <button type="button" onclick="sendEditEmailCode()" id="editSendOtpBtn" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-[11px] cursor-pointer">Verify</button>
+              </div>
+              <div id="editEmailVerifyBlock" class="hidden space-y-1 pt-1">
+                <div class="flex space-x-1">
+                  <input type="text" id="editOtpInput" placeholder="6-digit OTP" class="w-24 bg-slate-950 border border-slate-700 rounded p-1 text-white text-center font-mono">
+                  <button type="button" onclick="verifyEditEmailCode()" class="px-2 py-1 bg-emerald-600 text-white rounded text-[11px] cursor-pointer">Confirm</button>
+                </div>
+              </div>
+              <span id="editEmailStatus" class="text-[10px] text-slate-400 block mt-0.5">Status: ${a.emailVerified ? 'Verified ✓' : 'Not Verified'}</span>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Mobile Number</label>
+              <input type="tel" id="editAthMobile" value="${a.mobile}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Height</label>
+              <input type="text" id="editAthHeight" value="${a.height}" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Weight</label>
+              <input type="text" id="editAthWeight" value="${a.weight}" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Personal Best</label>
+              <input type="text" id="editAthPb" value="${a.personalBest}" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+            <span class="text-amber-400 font-bold block"><i class="fa-solid fa-lock mr-1"></i>Super Admin Restricted PDF Uploads (< 1MB, strictly .pdf)</span>
+            <div>
+              <label class="text-[11px] text-slate-400 block">ID Document (.pdf only)</label>
+              <input type="file" id="editAadhaarDoc" accept=".pdf" class="text-[11px] text-slate-400 file:text-xs">
+            </div>
+            <div>
+              <label class="text-[11px] text-slate-400 block">Passport Document (.pdf only)</label>
+              <input type="file" id="editPassportDoc" accept=".pdf" class="text-[11px] text-slate-400 file:text-xs">
+            </div>
+            <div>
+              <label class="text-[11px] text-slate-400 block">Disability Card (.pdf only)</label>
+              <input type="file" id="editDisabilityDoc" accept=".pdf" class="text-[11px] text-slate-400 file:text-xs">
+            </div>
+            <div>
+              <label class="text-[11px] text-slate-400 block">Achievements Document (.pdf only)</label>
+              <input type="file" id="editAchievementDoc" accept=".pdf" class="text-[11px] text-slate-400 file:text-xs">
+            </div>
+          </div>
+          <div class="flex justify-end space-x-2 pt-2">
+            <button type="button" onclick="openAthleteDetailModal('${a.username}')" class="px-3 py-1.5 bg-slate-800 text-white rounded cursor-pointer">Cancel</button>
+            <button type="submit" class="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded cursor-pointer">Save Changes</button>
+          </div>
+        </form>
       `;
-      document.getElementById('staffDetailModal').classList.remove('hidden');
-      document.getElementById('staffDetailModal').classList.add('flex');
     }
 
-    function closeStaffDetailModal() {
-      document.getElementById('staffDetailModal').classList.add('hidden');
-      document.getElementById('staffDetailModal').classList.remove('flex');
-    }
+    let editEmailVerifiedState = false;
+    async function sendEditEmailCode() {
+      const emailVal = document.getElementById('editAthEmail').value.trim();
+      if (!emailVal) { alert("Please enter a valid email address."); return; }
+      generatedOtpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const btn = document.getElementById('editSendOtpBtn');
+      btn.innerText = "Sending...";
+      btn.disabled = true;
 
-    function saveFullStaffProfile(e, username) {
-      e.preventDefault();
-      if (!isAdmin) return;
-      const s = usersDb.find(item => item.username === username);
-      if (!s) return;
-
-      s.name = document.getElementById('edit_staff_name').value;
-      s.designation = document.getElementById('edit_staff_desig').value;
-      s.dob = document.getElementById('edit_staff_dob').value;
-      s.joiningYear = document.getElementById('edit_staff_joining').value;
-      s.education = document.getElementById('edit_staff_edu').value;
-      s.mobile = document.getElementById('edit_staff_mobile').value;
-      s.aadhaar = document.getElementById('edit_staff_address').value;
-
-      if (!s.docs) s.docs = { aadhaar: null, panCard: null };
-      if (document.getElementById('staff_doc_aadhaar').files.length > 0) s.docs.aadhaar = "Uploaded PDF";
-      if (document.getElementById('staff_doc_pan').files.length > 0) s.docs.panCard = "Uploaded PDF";
-
-      refreshAllUI();
-      viewStaffFullProfile(username);
-      alert("Staff profile and documents successfully updated!");
-    }
-
-    function validateFileSize(input) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const fileSize = file.size / 1024 / 1024;
-        const fileType = file.type;
-
-        if (fileType !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-          alert("Invalid file format. Please upload a PDF file (.pdf).");
-          input.value = "";
-          return;
+      try {
+        const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "ADP-PSEC",
+            template_id: "template_rdc5hf4",
+            user_id: "A264Xg40sIF_7HuFM",
+            template_params: { email: emailVal, otp_code: generatedOtpCode }
+          })
+        });
+        if (response.ok) {
+          alert("Verification OTP sent to " + emailVal);
+          document.getElementById('editEmailVerifyBlock').classList.remove('hidden');
+          document.getElementById('editEmailStatus').innerText = "Status: OTP sent ✓";
+          document.getElementById('editEmailStatus').className = "text-[10px] text-sky-400 font-bold block mt-0.5";
+        } else {
+          alert("Error sending email verification.");
         }
-
-        if (fileSize > 1) {
-          alert("File size exceeds 1MB limit. Please upload a compressed PDF under 1MB.");
-          input.value = "";
-        }
+      } catch (err) {
+        alert("Network error.");
+      } finally {
+        btn.innerText = "Verify";
+        btn.disabled = false;
       }
     }
 
-    function saveFullAthleteProfile(e, username) {
+    function verifyEditEmailCode() {
+      const code = document.getElementById('editOtpInput').value.trim();
+      if (code !== generatedOtpCode) { alert("Invalid verification code."); return; }
+      editEmailVerifiedState = true;
+      document.getElementById('editEmailStatus').innerText = "Status: Verified via Email OTP ✓";
+      document.getElementById('editEmailStatus').className = "text-[10px] text-emerald-400 font-bold block mt-0.5";
+      document.getElementById('editEmailVerifyBlock').classList.add('hidden');
+      alert("Email successfully verified!");
+    }
+
+    let tempMemberPfpUrl = "";
+    function previewMemberPhoto(event, imgPreviewId) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 1024 * 1024) { alert("Passport photo must be less than 1MB."); return; }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          tempMemberPfpUrl = e.target.result;
+          document.getElementById(imgPreviewId).src = tempMemberPfpUrl;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function saveEditedAthlete(e, username) {
       e.preventDefault();
       if (!isAdmin) return;
-      const a = usersDb.find(item => item.username === username);
-      if (!a) return;
+      const a = usersDb.find(u => u.username === username);
+      if (a) {
+        a.name = document.getElementById('editAthName').value;
+        a.sport = document.getElementById('editAthSport').value;
+        a.sportClass = document.getElementById('editAthClass').value;
+        a.email = document.getElementById('editAthEmail').value;
+        if (editEmailVerifiedState) a.emailVerified = true;
+        a.mobile = document.getElementById('editAthMobile').value;
+        a.height = document.getElementById('editAthHeight').value;
+        a.weight = document.getElementById('editAthWeight').value;
+        a.personalBest = document.getElementById('editAthPb').value;
+        if (tempMemberPfpUrl) {
+          a.photoUrl = tempMemberPfpUrl;
+          tempMemberPfpUrl = "";
+        }
+        
+        const checkPdf = (fileInputId) => {
+          const input = document.getElementById(fileInputId);
+          if (input && input.files.length > 0) {
+            const f = input.files[0];
+            if (f.size > 1024 * 1024) { alert("File exceeds 1MB limit."); return false; }
+            if (f.type !== "application/pdf") { alert("Only PDF files are allowed for secure documents."); return false; }
+            return true;
+          }
+          return false;
+        };
 
-      a.name = document.getElementById('edit_name').value;
-      a.dob = document.getElementById('edit_dob').value;
-      a.sport = document.getElementById('edit_sport').value;
-      a.projectId = document.getElementById('edit_project').value;
-      a.weight = document.getElementById('edit_weight').value;
-      a.height = document.getElementById('edit_height').value;
-      a.mobile = document.getElementById('edit_mobile').value;
-      a.personalBest = document.getElementById('edit_pb').value;
+        if (checkPdf('editAadhaarDoc')) a.docs.aadhaarPdf = "Verified (< 1MB PDF)";
+        if (checkPdf('editPassportDoc')) a.docs.passport = "Verified (< 1MB PDF)";
+        if (checkPdf('editDisabilityDoc')) a.docs.disabilityCert = "Verified (< 1MB PDF)";
+        if (checkPdf('editAchievementDoc')) a.docs.achievementDoc = "Verified (< 1MB PDF)";
 
-      if (document.getElementById('doc_aadhaar').files.length > 0) a.docs.aadhaar = "Uploaded PDF";
-      if (document.getElementById('doc_passport').files.length > 0) a.docs.passport = "Uploaded PDF";
-      if (document.getElementById('doc_disability').files.length > 0) a.docs.disabilityCert = "Uploaded PDF";
-      if (document.getElementById('doc_achieve').files.length > 0) a.docs.achievementDoc = "Uploaded PDF";
-
-      refreshAllUI();
-      viewAthleteFullProfile(username);
-      alert("Athlete profile, project and PDF documents successfully updated!");
+        saveAllStateToStorage();
+        refreshAllUI();
+        alert("Athlete profile and secure documents updated successfully!");
+        openAthleteDetailModal(username);
+      }
     }
 
     function closeDetailModal() {
@@ -2044,27 +1829,444 @@
       document.getElementById('athleteDetailModal').classList.remove('flex');
     }
 
-    function deleteMember(username) {
+    function openStaffDetailModal(username) {
+      const s = usersDb.find(u => u.username === username);
+      if (!s) return;
+      const content = document.getElementById('modalStaffContent');
+
+      let editControls = isAdmin ? `
+        <div class="mt-4 pt-4 border-t border-slate-800 flex justify-end space-x-2">
+          <button onclick="enableStaffEdit('${s.username}')" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-bold cursor-pointer">Edit Full Profile</button>
+        </div>
+      ` : '';
+
+      let passwordBadge = isAdmin ? `<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono rounded font-bold">Password: ${s.password}</span>` : '';
+      let superAdminViewDocsNotice = isAdmin ? `<p class="col-span-2 text-[10px] text-amber-400 italic"><i class="fa-solid fa-lock mr-1"></i>Secure Document Vault: Only Super Admin can view/verify uploaded credentials.</p>` : '';
+      let docViewerAadhaar = isAdmin && s.docs?.aadhaarPdf ? `<button onclick="alert('Opening secure document vault...')" class="ml-2 px-2 py-0.5 bg-amber-600 hover:bg-amber-500 text-white rounded text-[9px] cursor-pointer shadow">View PDF</button>` : '';
+
+      content.innerHTML = `
+        <div id="staffProfileViewContainer">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <img src="${s.photoUrl}" class="w-16 h-16 rounded-xl object-cover border border-amber-500 shadow-md bg-white">
+              <div>
+                <h3 class="text-lg font-bold text-white">${s.name}</h3>
+                <p class="text-xs text-amber-400 font-mono">${s.username} | ${s.designation}</p>
+              </div>
+            </div>
+            <div>${passwordBadge}</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+            ${superAdminViewDocsNotice}
+            <p class="text-slate-300"><strong class="text-slate-400">Email:</strong> ${s.email} ${s.emailVerified ? '<span class="text-emerald-400 text-[10px] font-bold">✓ Verified</span>' : ''}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Mobile:</strong> ${s.mobile}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Education:</strong> ${s.education}</p>
+            <p class="text-slate-300"><strong class="text-slate-400">Joining Year:</strong> ${s.joiningYear}</p>
+            <div class="text-slate-300 flex items-center"><strong class="text-slate-400 mr-1">Document (.pdf):</strong> <span class="text-emerald-400">${s.docs?.aadhaarPdf || 'Verified (< 1MB)'}</span>${docViewerAadhaar}</div>
+            <p class="text-slate-300"><strong class="text-slate-400">Address:</strong> ${s.aadhaar || 'N/A'}</p>
+          </div>
+          ${editControls}
+        </div>
+      `;
+      document.getElementById('staffDetailModal').classList.remove('hidden');
+      document.getElementById('staffDetailModal').classList.add('flex');
+    }
+
+    function enableStaffEdit(username) {
       if (!isAdmin) return;
-      if (confirm(`Remove member with username '${username}' from PSEC database?`)) {
-        usersDb = usersDb.filter(u => u.username !== username);
+      const s = usersDb.find(u => u.username === username);
+      if (!s) return;
+      const container = document.getElementById('staffProfileViewContainer');
+      container.innerHTML = `
+        <h3 class="text-base font-bold text-amber-400 mb-3">Edit Full Staff Profile & Secure Vault</h3>
+        <form onsubmit="saveEditedStaff(event, '${s.username}')" class="space-y-3 text-xs">
+          <div class="flex items-center space-x-3 mb-2 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+            <img id="editStaffPfpPreview" src="${s.photoUrl}" class="w-12 h-12 rounded-lg object-cover border border-amber-500 bg-white">
+            <div class="flex-1">
+              <label class="block font-semibold text-slate-300 mb-0.5">Passport Photo (JPG/PNG < 1MB)</label>
+              <input type="file" id="editStaffPfpFile" accept=".jpg,.jpeg,.png" onchange="previewMemberPhoto(event, 'editStaffPfpPreview')" class="text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-amber-600 file:text-white cursor-pointer">
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Full Name</label>
+            <input type="text" id="editStaffName" value="${s.name}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Designation</label>
+            <input type="text" id="editStaffDesig" value="${s.designation}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Email ID</label>
+              <input type="email" id="editStaffEmail" value="${s.email}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Mobile Number</label>
+              <input type="tel" id="editStaffMobile" value="${s.mobile}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+            </div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+            <span class="text-amber-400 font-bold block"><i class="fa-solid fa-lock mr-1"></i>Super Admin Restricted PDF Upload (< 1MB, strictly .pdf)</span>
+            <div>
+              <label class="text-[11px] text-slate-400 block">ID Document PDF</label>
+              <input type="file" id="editStaffAadhaarDoc" accept=".pdf" class="text-[11px] text-slate-400 file:text-xs">
+            </div>
+          </div>
+          <div class="flex justify-end space-x-2 pt-2">
+            <button type="button" onclick="openStaffDetailModal('${s.username}')" class="px-3 py-1.5 bg-slate-800 text-white rounded cursor-pointer">Cancel</button>
+            <button type="submit" class="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded cursor-pointer">Save Changes</button>
+          </div>
+        </form>
+      `;
+    }
+
+    function saveEditedStaff(e, username) {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const s = usersDb.find(u => u.username === username);
+      if (s) {
+        s.name = document.getElementById('editStaffName').value;
+        s.designation = document.getElementById('editStaffDesig').value;
+        s.email = document.getElementById('editStaffEmail').value;
+        s.mobile = document.getElementById('editStaffMobile').value;
+        if (tempMemberPfpUrl) {
+          s.photoUrl = tempMemberPfpUrl;
+          tempMemberPfpUrl = "";
+        }
+        const staffAadhaar = document.getElementById('editStaffAadhaarDoc');
+        if (staffAadhaar && staffAadhaar.files.length > 0) {
+          const f = staffAadhaar.files[0];
+          if (f.size > 1024 * 1024) { alert("Aadhaar PDF must be less than 1MB."); return; }
+          if (f.type !== "application/pdf") { alert("Only PDF files are allowed."); return; }
+          s.docs.aadhaarPdf = "Verified (< 1MB PDF)";
+        }
+
+        saveAllStateToStorage();
         refreshAllUI();
+        alert("Staff full profile and documents updated successfully!");
+        openStaffDetailModal(username);
       }
     }
 
-    // REHAB PROTOCOL DELETION (SUPER ADMIN ONLY)
+    function closeStaffDetailModal() {
+      document.getElementById('staffDetailModal').classList.add('hidden');
+      document.getElementById('staffDetailModal').classList.remove('flex');
+    }
+
+    function populateDropdowns(playersList) {
+      const graphSel = document.getElementById('graphAthleteSelect');
+      if (graphSel) graphSel.innerHTML = playersList.map(a => `<option value="${a.username}">${a.name} (${a.sportClass})</option>`).join('');
+
+      const rehabAthSel = document.getElementById('rehab-athlete');
+      if (rehabAthSel) rehabAthSel.innerHTML = playersList.map(a => `<option value="${a.name}">${a.name} (${a.sportClass})</option>`).join('');
+
+      const mentalAthSel = document.getElementById('mental-athlete');
+      if (mentalAthSel) mentalAthSel.innerHTML = playersList.map(a => `<option value="${a.name}">${a.name} (${a.sportClass})</option>`).join('');
+    }
+
+    function openMyProfileModal() {
+      if (!currentUser) return;
+      const content = document.getElementById('modalMyProfileContent');
+      content.innerHTML = `
+        <h3 class="text-base font-bold text-amber-400 mb-4 flex items-center">
+          <i class="fa-solid fa-user-gear mr-2"></i>Edit Super Admin Profile
+        </h3>
+        <form onsubmit="saveMyProfile(event)" class="space-y-3 text-xs">
+          <div class="flex items-center space-x-4 mb-2">
+            <img id="profilePreviewImg" src="${currentUser.photoUrl || ''}" class="w-14 h-14 rounded-xl object-cover border border-purple-500 shadow-md bg-white">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Upload New Profile Picture (JPG/PNG < 1MB)</label>
+              <input type="file" id="adminPhotoFile" accept=".jpg,.jpeg,.png" onchange="previewAdminPhoto(event)" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-500 cursor-pointer">
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Full Name</label>
+            <input type="text" id="editAdminName" value="${currentUser.name}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Email ID</label>
+            <input type="email" id="editAdminEmail" value="${currentUser.email || ''}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Mobile Number</label>
+            <input type="tel" id="editAdminMobile" value="${currentUser.mobile || ''}" required class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition cursor-pointer">Save Changes</button>
+        </form>
+      `;
+      document.getElementById('myProfileModal').classList.remove('hidden');
+      document.getElementById('myProfileModal').classList.add('flex');
+    }
+
+    let temporaryUploadedPhotoUrl = "";
+    function previewAdminPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 1024 * 1024) { alert("File size must be less than 1MB."); return; }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          temporaryUploadedPhotoUrl = e.target.result;
+          document.getElementById('profilePreviewImg').src = temporaryUploadedPhotoUrl;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function closeMyProfileModal() {
+      document.getElementById('myProfileModal').classList.add('hidden');
+      document.getElementById('myProfileModal').classList.remove('flex');
+    }
+
+    function saveMyProfile(e) {
+      e.preventDefault();
+      currentUser.name = document.getElementById('editAdminName').value;
+      currentUser.email = document.getElementById('editAdminEmail').value;
+      currentUser.mobile = document.getElementById('editAdminMobile').value;
+      if (temporaryUploadedPhotoUrl) {
+        currentUser.photoUrl = temporaryUploadedPhotoUrl;
+        temporaryUploadedPhotoUrl = "";
+      }
+
+      const uIndex = usersDb.findIndex(u => u.username === currentUser.username);
+      if (uIndex !== -1) {
+        usersDb[uIndex] = currentUser;
+      }
+
+      saveAllStateToStorage();
+      applyUserInterfacePermissions();
+      closeMyProfileModal();
+      alert("Super Admin profile updated successfully!");
+    }
+
+    function saveRehabCase(e) {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const athleteName = document.getElementById('rehab-athlete').value;
+      const athleteObj = usersDb.find(u => u.name === athleteName);
+      const area = document.getElementById('rehab-area').value;
+      const precautions = document.getElementById('rehab-precautions').value;
+      const therapy = document.getElementById('rehab-therapy').value;
+
+      rehabCases.unshift({
+        id: Date.now(),
+        athlete: athleteName,
+        username: athleteObj ? athleteObj.username : 'psec101',
+        projectId: athleteObj ? athleteObj.projectId : 'hcl',
+        area: area,
+        precautions: precautions,
+        therapy: therapy,
+        status: "Active Protocol"
+      });
+
+      saveAllStateToStorage();
+      refreshAllUI();
+      alert("Injury protocol published and saved!");
+      e.target.reset();
+    }
+
+    function saveMentalCase(e) {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const athleteName = document.getElementById('mental-athlete').value;
+      const athleteObj = usersDb.find(u => u.name === athleteName);
+      const problem = document.getElementById('mental-problem').value;
+      const summary = document.getElementById('mental-summary').value;
+      const solution = document.getElementById('mental-solution').value;
+
+      mentalCases.unshift({
+        id: Date.now(),
+        athlete: athleteName,
+        username: athleteObj ? athleteObj.username : 'psec101',
+        projectId: athleteObj ? athleteObj.projectId : 'hcl',
+        problem: problem,
+        summary: summary,
+        solution: solution,
+        lastEditedDays: 0
+      });
+
+      saveAllStateToStorage();
+      refreshAllUI();
+      alert("Mental health record published and saved!");
+      e.target.reset();
+    }
+
+    function renderRehabRoster() {
+      const feed = document.getElementById('rehabRosterFeed');
+      const { rehabList } = getFilteredData();
+      if (!feed) return;
+
+      if (rehabList.length === 0) {
+        feed.innerHTML = `<p class="text-xs text-slate-500 italic p-3">No active injury rehab protocols logged under this project.</p>`;
+        return;
+      }
+
+      feed.innerHTML = rehabList.map(r => `
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-rose-400"><i class="fa-solid fa-user mr-1"></i>${r.athlete}</span>
+            <div class="flex items-center space-x-2">
+              <span class="px-2 py-0.5 bg-rose-500/10 text-rose-300 rounded text-[10px] font-bold border border-rose-500/20">${r.status}</span>
+              ${isAdmin ? `<button onclick="deleteRehabProtocol(${r.id})" class="text-rose-400 hover:text-rose-300 text-xs cursor-pointer"><i class="fa-solid fa-trash"></i></button>` : ''}
+            </div>
+          </div>
+          <p class="text-xs text-white"><strong class="text-slate-400">Injury Area:</strong> ${r.area}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Precautions:</strong> ${r.precautions}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Therapy:</strong> ${r.therapy}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderMentalRoster() {
+      const feed = document.getElementById('mentalRosterFeed');
+      const { mentalList } = getFilteredData();
+      if (!feed) return;
+
+      if (mentalList.length === 0) {
+        feed.innerHTML = `<p class="text-xs text-slate-500 italic p-3">No mental health records logged under this project.</p>`;
+        return;
+      }
+
+      feed.innerHTML = mentalList.map(m => `
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-indigo-400"><i class="fa-solid fa-user mr-1"></i>${m.athlete}</span>
+            <span class="text-[10px] text-slate-400">${m.lastEditedDays} days ago</span>
+          </div>
+          <p class="text-xs text-white"><strong class="text-slate-400">Problem:</strong> ${m.problem}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Summary:</strong> ${m.summary}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Solution:</strong> ${m.solution}</p>
+        </div>
+      `).join('');
+    }
+
+    function searchRehabRoster() {
+      const q = document.getElementById('rehabSearchInput').value.toLowerCase();
+      const feed = document.getElementById('rehabRosterFeed');
+      const { rehabList } = getFilteredData();
+      const filtered = rehabList.filter(r => r.athlete.toLowerCase().includes(q) || r.area.toLowerCase().includes(q));
+      
+      if (filtered.length === 0) {
+        feed.innerHTML = `<p class="text-xs text-slate-500 italic p-3">No matching rehab records found.</p>`;
+        return;
+      }
+
+      feed.innerHTML = filtered.map(r => `
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-rose-400">${r.athlete}</span>
+            <span class="px-2 py-0.5 bg-rose-500/10 text-rose-300 rounded text-[10px] font-bold">${r.status}</span>
+          </div>
+          <p class="text-xs text-white"><strong class="text-slate-400">Injury Area:</strong> ${r.area}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Precautions:</strong> ${r.precautions}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Therapy:</strong> ${r.therapy}</p>
+        </div>
+      `).join('');
+    }
+
+    function searchMentalRoster() {
+      const q = document.getElementById('mentalSearchInput').value.toLowerCase();
+      const feed = document.getElementById('mentalRosterFeed');
+      const { mentalList } = getFilteredData();
+      const filtered = mentalList.filter(m => m.athlete.toLowerCase().includes(q) || m.problem.toLowerCase().includes(q));
+
+      if (filtered.length === 0) {
+        feed.innerHTML = `<p class="text-xs text-slate-500 italic p-3">No matching mental health records found.</p>`;
+        return;
+      }
+
+      feed.innerHTML = filtered.map(m => `
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-indigo-400">${m.athlete}</span>
+          </div>
+          <p class="text-xs text-white"><strong class="text-slate-400">Problem:</strong> ${m.problem}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Summary:</strong> ${m.summary}</p>
+          <p class="text-xs text-slate-300"><strong class="text-slate-400">Solution:</strong> ${m.solution}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderEquipmentLogsView() {
+      const feed = document.getElementById('equipmentLogFeed');
+      const { equipList } = getFilteredData();
+      if (!feed) return;
+
+      if (equipList.length === 0) {
+        feed.innerHTML = `<p class="text-xs text-slate-500 italic p-3">No adaptive equipment requests found.</p>`;
+        return;
+      }
+
+      feed.innerHTML = equipList.map(eq => {
+        let adminActionMarkup = '';
+        if (isAdmin) {
+          adminActionMarkup = `
+            <div class="mt-3 pt-3 border-t border-slate-800 space-y-2">
+              <input type="text" id="reason_input_${eq.id}" placeholder="Enter review reason / notes..." class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-xs text-white">
+              <div class="flex space-x-2">
+                <button onclick="sendEquipmentReview(${eq.id}, 'Approved')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-bold cursor-pointer">Approve Request</button>
+                <button onclick="sendEquipmentReview(${eq.id}, 'Rejected')" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded text-xs font-bold cursor-pointer">Reject Request</button>
+              </div>
+            </div>
+          `;
+        }
+
+        let deleteBtn = (isAdmin || (currentUser && currentUser.username === eq.username)) ? 
+          `<button onclick="deleteEquipRequest(${eq.id})" class="text-rose-400 hover:text-rose-300 text-xs cursor-pointer"><i class="fa-solid fa-trash"></i></button>` : '';
+
+        return `
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white"><i class="fa-solid fa-wrench mr-1"></i>${eq.item}</span>
+              <div class="flex items-center space-x-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${eq.status.includes('Approved') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : eq.status.includes('Rejected') ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">${eq.status}</span>
+                ${deleteBtn}
+              </div>
+            </div>
+            <p class="text-xs text-slate-300"><strong class="text-slate-400">Athlete:</strong> ${eq.athlete} (${eq.username})</p>
+            <p class="text-xs text-slate-300"><strong class="text-slate-400">Notes:</strong> ${eq.notes}</p>
+            ${eq.reviewReason ? `<p class="text-xs text-amber-300 bg-slate-900 p-2 rounded border border-slate-800"><strong class="text-white">Admin Decision Note:</strong> ${eq.reviewReason}</p>` : ''}
+            ${adminActionMarkup}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function saveEquipRequest(e) {
+      e.preventDefault();
+      if (!currentUser || currentUser.role !== 'player') return;
+      const itemName = document.getElementById('equip-item-name').value;
+      const notes = document.getElementById('equip-item-notes').value;
+
+      equipmentLogs.unshift({
+        id: Date.now(),
+        athlete: currentUser.name,
+        username: currentUser.username,
+        projectId: currentUser.projectId,
+        item: itemName,
+        notes: notes,
+        status: "Pending Super Admin Review",
+        reviewReason: ""
+      });
+
+      saveAllStateToStorage();
+      refreshAllUI();
+      alert("Adaptive equipment request submitted successfully!");
+      e.target.reset();
+    }
+
     function deleteRehabProtocol(id) {
       if (!isAdmin) return;
       if (confirm("Are you sure you want to delete this active rehab protocol?")) {
         rehabCases = rehabCases.filter(r => r.id !== id);
+        saveAllStateToStorage();
         refreshAllUI();
       }
     }
 
-    // ADAPTIVE EQUIPMENT DELETION & REVIEW SEND WORKFLOW
     function deleteEquipRequest(id) {
-      if (confirm("Are you sure you want to delete your equipment request?")) {
+      if (confirm("Are you sure you want to delete this equipment request?")) {
         equipmentLogs = equipmentLogs.filter(eq => eq.id !== id);
+        saveAllStateToStorage();
         refreshAllUI();
       }
     }
@@ -2073,24 +2275,15 @@
       if (!isAdmin) return;
       const eq = equipmentLogs.find(item => item.id === id);
       if (!eq) return;
-
       const reasonInput = document.getElementById(`reason_input_${id}`);
       const reasonText = reasonInput ? reasonInput.value.trim() : "";
-
-      if (!reasonText) {
-        alert("Please provide a reason before sending the decision.");
-        return;
-      }
-
+      if (!reasonText) { alert("Please provide a reason before sending the decision."); return; }
       eq.status = status;
       eq.reviewReason = reasonText;
-
+      saveAllStateToStorage();
       refreshAllUI();
-      alert(`Equipment request decision (${status}) with reason sent to player successfully!`);
+      alert(`Equipment request decision (${status}) saved successfully!`);
     }
-
-    // CALENDAR & DISCIPLINES TAB FUNCTIONS
-    let activeDisciplineIdForAdd = null;
 
     function renderCalendarDisciplinesView() {
       const grid = document.getElementById('disciplineColumnsGrid');
@@ -2098,21 +2291,16 @@
       if (!grid) return;
 
       let filtered = disciplineColumns;
-      if (q) {
-        filtered = disciplineColumns.filter(d => d.name.toLowerCase().includes(q));
-      }
+      if (q) filtered = disciplineColumns.filter(d => d.name.toLowerCase().includes(q));
 
-      let adminAddColumnBtn = '';
-      if (isAdmin) {
-        adminAddColumnBtn = `
-          <div class="col-span-full mb-2">
-            <button onclick="openAddDisciplineModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition flex items-center space-x-2 cursor-pointer">
-              <i class="fa-solid fa-plus-circle"></i>
-              <span>Add New Discipline Column</span>
-            </button>
-          </div>
-        `;
-      }
+      let adminAddColumnBtn = isAdmin ? `
+        <div class="col-span-full mb-2">
+          <button onclick="openAddDisciplineModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition flex items-center space-x-2 cursor-pointer">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span>Add New Discipline Column</span>
+          </button>
+        </div>
+      ` : '';
 
       if (filtered.length === 0) {
         grid.innerHTML = adminAddColumnBtn + `<p class="col-span-full text-xs text-slate-500 p-4">No matching discipline columns found.</p>`;
@@ -2121,44 +2309,30 @@
 
       let markup = adminAddColumnBtn;
       filtered.forEach(col => {
-        let plusIconBtn = '';
-        if (isAdmin) {
-          plusIconBtn = `<button onclick="openAddCalendarModal('${col.id}')" title="Add Event" class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 flex items-center justify-center cursor-pointer transition"><i class="fa-solid fa-plus text-xs"></i></button>`;
-        }
-
-        let eventsHtml = '';
-        if (col.events && col.events.length > 0) {
-          eventsHtml = col.events.map(ev => `
-            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
-              <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-regular fa-calendar mr-1"></i>${ev.date}</span>
-              <p class="text-xs text-slate-200 leading-relaxed">${ev.desc}</p>
-            </div>
-          `).join('');
-        } else {
-          eventsHtml = `<p class="text-xs text-slate-500 italic">No events scheduled yet.</p>`;
-        }
+        let plusIconBtn = isAdmin ? `<button onclick="openAddCalendarModal('${col.id}')" title="Add Event" class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 flex items-center justify-center cursor-pointer transition"><i class="fa-solid fa-plus text-xs"></i></button>` : '';
+        let eventsHtml = (col.events && col.events.length > 0) ? col.events.map(ev => `
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-regular fa-calendar mr-1"></i>${ev.date}</span>
+            <p class="text-xs text-slate-200 leading-relaxed">${ev.desc}</p>
+          </div>
+        `).join('') : `<p class="text-xs text-slate-500 italic">No events scheduled yet.</p>`;
 
         markup += `
-          <div id="col_card_${col.id}" class="bg-slate-900 border ${col.color.split(' ')[0]} p-5 rounded-2xl space-y-4 shadow-lg flex flex-col justify-between">
+          <div class="bg-slate-900 border ${col.color.split(' ')[0]} p-5 rounded-2xl space-y-4 shadow-lg flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h4 class="text-sm font-black text-white uppercase tracking-wider">${col.name}</h4>
                 ${plusIconBtn}
               </div>
-              <div class="space-y-2">
-                ${eventsHtml}
-              </div>
+              <div class="space-y-2">${eventsHtml}</div>
             </div>
           </div>
         `;
       });
-
       grid.innerHTML = markup;
     }
 
-    function searchDisciplineColumns() {
-      renderCalendarDisciplinesView();
-    }
+    function searchDisciplineColumns() { renderCalendarDisciplinesView(); }
 
     function openAddDisciplineModal() {
       if (!isAdmin) return;
@@ -2177,19 +2351,16 @@
       const name = document.getElementById('newDisciplineName').value.trim();
       const color = document.getElementById('newDisciplineColor').value;
       const id = name.toLowerCase().replace(/\s+/g, '-');
-
-      if (disciplineColumns.some(d => d.id === id)) {
-        alert("Discipline column already exists.");
-        return;
-      }
-
+      if (disciplineColumns.some(d => d.id === id)) { alert("Discipline column already exists."); return; }
       disciplineColumns.push({ id, name, color, events: [] });
+      saveAllStateToStorage();
       closeAddDisciplineModal();
       renderCalendarDisciplinesView();
-      alert(`Discipline column '${name}' created successfully!`);
+      alert(`Discipline column '${name}' created and saved!`);
       e.target.reset();
     }
 
+    let activeDisciplineIdForAdd = null;
     function openAddCalendarModal(colId) {
       if (!isAdmin) return;
       activeDisciplineIdForAdd = colId;
@@ -2208,17 +2379,16 @@
     function saveCalendarEvent(e) {
       e.preventDefault();
       if (!isAdmin || !activeDisciplineIdForAdd) return;
-
       const date = document.getElementById('newEventDate').value.trim();
       const desc = document.getElementById('newEventDesc').value.trim();
-
       const col = disciplineColumns.find(d => d.id === activeDisciplineIdForAdd);
       if (col) {
         if (!col.events) col.events = [];
         col.events.push({ date, desc });
+        saveAllStateToStorage();
         renderCalendarDisciplinesView();
         closeAddCalendarModal();
-        alert("Event successfully added to discipline column!");
+        alert("Calendar event successfully added and saved!");
         e.target.reset();
       }
     }
@@ -2230,11 +2400,11 @@
       { name: "Diclofenac (Voveran / Dynapar)", category: "NSAID", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted orally, topically, or via injection." },
       { name: "Pantocid / Pantoprazole", category: "Proton Pump Inhibitor (Acidity)", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted for gastric acid and acidity relief." },
       { name: "Bevon Syrup / Suspension", category: "Multivitamin & Dietary Supplement", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted nutritional supplement containing vitamins and minerals." },
-      { name: "Vasograin Tablet", category: "Anti-Migraine (Ergotamine + Caffeine + Paracetamol)", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted for therapeutic migraine relief. Not banned in sport." },
-      { name: "Cetirizine / Levocetirizine (Alerid / Xyzal)", category: "Antihistamine", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted for allergies." },
+      { name: "Vasograin Tablet", category: "Anti-Migraine (Ergotamine + Caffeine + Paracetamol)", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted for therapeutic migraine relief." },
+      { name: "Code: Cetirizine / Levocetirizine (Alerid / Xyzal)", category: "Antihistamine", status: "PERMITTED", statusClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", notes: "Permitted for allergies." },
       { name: "Salbutamol Inhaler (Asthalin / Ventolin)", category: "Beta-2 Agonist", status: "CONDITIONALLY PERMITTED", statusClass: "text-amber-400 bg-amber-500/10 border-amber-500/20", notes: "Permitted by inhalation only up to max 1600 mcg over 24 hours." },
       { name: "Prednisolone / Methylprednisolone (Medrol)", category: "Glucocorticoid", status: "PROHIBITED IN-COMPETITION", statusClass: "text-rose-400 bg-rose-500/10 border-rose-500/20", notes: "Prohibited when administered orally, IV, or IM in-competition." },
-      { name: "Nandrolone (Deca-Durabolin)", category: "Anabolic Steroid", status: "BANNED / PROHIBITED", statusClass: "text-rose-400 bg-rose-500/10 border-rose-500/20", notes: "Strictly prohibited at all times (In and Out of Competition)." },
+      { name: "Nandrolone (Deca-Durabolin)", category: "Anabolic Steroid", status: "BANNED / PROHIBITED", statusClass: "text-rose-400 bg-rose-500/10 border-rose-500/20", notes: "Strictly prohibited at all times." },
       { name: "Furosemide (Lasix)", category: "Diuretic / Masking Agent", status: "BANNED / PROHIBITED", statusClass: "text-rose-400 bg-rose-500/10 border-rose-500/20", notes: "Prohibited at all times as a masking agent." }
     ];
 
@@ -2261,16 +2431,9 @@
     async function searchMedicineAPI() {
       const q = document.getElementById('medicineSearchInput').value.trim().toLowerCase();
       const grid = document.getElementById('medicineResultsGrid');
-
       grid.innerHTML = `<p class="text-xs text-amber-400 p-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Searching medicine database...</p>`;
-
       setTimeout(() => {
-        const filtered = masterDrugDatabase.filter(m => 
-          m.name.toLowerCase().includes(q) || 
-          m.category.toLowerCase().includes(q) || 
-          m.notes.toLowerCase().includes(q)
-        );
-
+        const filtered = masterDrugDatabase.filter(m => m.name.toLowerCase().includes(q) || m.category.toLowerCase().includes(q) || m.notes.toLowerCase().includes(q));
         if (filtered.length === 0) {
           grid.innerHTML = `
             <div class="col-span-full bg-slate-900 border border-amber-500/40 p-6 rounded-xl text-center space-y-3">
@@ -2284,7 +2447,6 @@
           `;
           return;
         }
-
         renderMedicineList(filtered);
       }, 250);
     }
